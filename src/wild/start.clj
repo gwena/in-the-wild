@@ -74,14 +74,14 @@
       (GL/createCapabilities)
       (listen-for-mouse window)
       (listen-for-keys window)
-      ;; (play-music)
+      (play-music)
       (let [initial-game (assoc (pc/->game window)
                                 :delta-time 0
                                 :total-time 0)]
         (c/init initial-game)
         (loop [game initial-game]
           (when-not (GLFW/glfwWindowShouldClose window)
-            (let [ts (GLFW/glfwGetTime)
+            (let [ts   (GLFW/glfwGetTime)
                   game (assoc game
                               :delta-time (- ts (:total-time game))
                               :total-time ts)
