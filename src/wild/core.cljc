@@ -11,14 +11,15 @@
                :cljs [wild.tile :as tile :refer-macros [read-tiled-map]])
             #?(:cljs [goog.dom :as dom])))
 
-(def cloud-pink-width 179)
-(def cloud-pink-height 121)
-(def game-over-width 375)
-(def game-over-height 198)
+(def cloud-pink-w 179)
+(def cloud-pink-h 121)
 
-(def display-logo? true)
-(def logo-width 200)
-(def logo-height 46)
+(def game-over-w 375)
+(def game-over-h 198)
+
+(def display-title? true)
+(def title-w 200)
+(def title-h 46)
 
 (defn generate-clouds []
   (let [nb-clouds (utils/rand-range 22 30)]
@@ -95,11 +96,10 @@
 
 (def color-blueish [0.68 0.85 0.92 1])
 (def color-dark-blue [0.18 0.25 0.32 1])
-(def color-game-over [0.1 0.1 0.1 1])
 
 (defn color-transform [from to to-weight]
   (let [from-weight (- 1.0 to-weight)
-        components (map vector from to)]
+        components  (map vector from to)]
     (into [] (map #(+ (* (first %) from-weight) (* (last %) to-weight))
                   components))))
 
@@ -113,7 +113,6 @@
 (defn run [game]
   (let [{:keys [lifecycle
                 endgame
-                pressed-keys
                 player-x
                 player-y
                 player-width
@@ -161,8 +160,8 @@
                       (t/project game-width game-height)
                       (t/camera camera)
                       (t/translate (:x cloud) (:y cloud))
-                      (t/scale (* (:size cloud) (:invert cloud) cloud-pink-width)
-                               (* (:size cloud) cloud-pink-height)))))
+                      (t/scale (* (:size cloud) (:invert cloud) cloud-pink-w)
+                               (* (:size cloud) cloud-pink-h)))))
       clouds)
 
     (doseq [reward rewards]
@@ -191,17 +190,17 @@
                   (-> image
                       (t/project game-width game-height)
                       (t/camera camera)
-                      (t/translate (- player-x (/ game-over-width 2)) (/ (- game-height game-over-height) 2))
-                      (t/scale game-over-width game-over-height)))))
+                      (t/translate (- player-x (/ game-over-w 2)) (/ (- game-height game-over-h) 2))
+                      (t/scale game-over-w game-over-h)))))
 
-    (when display-logo?
+    (when display-title?
       (when-let [image (get player-images :logo)]
         (c/render game
                   (-> image
                       (t/project game-width game-height)
                       (t/camera camera)
                       (t/translate (+ pos-x 10) 10)
-                      (t/scale logo-width logo-height)))))
+                      (t/scale title-w title-h)))))
 
     ;; update score
     (when (not= lifecycle :game-over)
