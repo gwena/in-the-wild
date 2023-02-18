@@ -1,0 +1,5 @@
+.DS_Store
+target/
+resources/public/*.js
+resources/public/main.out/
+.cpcache
