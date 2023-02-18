@@ -10,7 +10,7 @@
    1/2 :+d 1/8 :f :g 1/4 :a 3/8 :f 1/8 :e :f :g :d])
 
 (def music
-  (-> (io/resource "public/aeriths-theme.edn")
+  (-> (io/resource "public/music/aeriths-theme.edn")
       (slurp)
       (read-string)))
 
