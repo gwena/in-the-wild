@@ -128,7 +128,7 @@
                 clouds
                 rewards
                 killers]
-         :as   state}   @*state
+         :as   state} @*state
         game-width    (utils/get-width game)
         game-height   (utils/get-height game)
         offset        (/ game-width 2)
@@ -185,7 +185,7 @@
                       (t/scale 64 64))))
       rewards)
 
-    (if (and (= lifecycle :game-over) (< (- (utils/now) endgame) 5000))
+    (when (and (= lifecycle :game-over) (< (- (utils/now) endgame) 5000))
       (when-let [image (get player-images :game-over)]
         (c/render game
                   (-> image
@@ -194,7 +194,7 @@
                       (t/translate (- player-x (/ game-over-width 2)) (/ (- game-height game-over-height) 2))
                       (t/scale game-over-width game-over-height)))))
 
-    (if display-logo?
+    (when display-logo?
       (when-let [image (get player-images :logo)]
         (c/render game
                   (-> image
@@ -204,7 +204,7 @@
                       (t/scale logo-width logo-height)))))
 
     ;; update score
-    (if (not= lifecycle :game-over)
+    (when (not= lifecycle :game-over)
       #?(:cljs (dom/setTextContent (.getElementById js/document "score") (total-score state)))
       #?(:clj (println (total-score state))))
 
