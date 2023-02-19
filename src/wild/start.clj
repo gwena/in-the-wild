@@ -10,46 +10,46 @@
 
 (defn listen-for-mouse [window]
   (GLFW/glfwSetCursorPosCallback window
-    (reify GLFWCursorPosCallbackI
-      (invoke [this window xpos ypos]
-        (swap! c/*state
-          (fn [state]
-            (let [*fb-width (MemoryUtil/memAllocInt 1)
-                  *fb-height (MemoryUtil/memAllocInt 1)
-                  *window-width (MemoryUtil/memAllocInt 1)
-                  *window-height (MemoryUtil/memAllocInt 1)
-                  _ (GLFW/glfwGetFramebufferSize window *fb-width *fb-height)
-                  _ (GLFW/glfwGetWindowSize window *window-width *window-height)
-                  fb-width (.get *fb-width)
-                  fb-height (.get *fb-height)
-                  window-width (.get *window-width)
-                  window-height (.get *window-height)
-                  width-ratio (/ fb-width window-width)
-                  height-ratio (/ fb-height window-height)
-                  x (* xpos width-ratio)
-                  y (* ypos height-ratio)]
-              (MemoryUtil/memFree *fb-width)
-              (MemoryUtil/memFree *fb-height)
-              (MemoryUtil/memFree *window-width)
-              (MemoryUtil/memFree *window-height)
-              (assoc state :mouse-x x :mouse-y y))))))))
+                                 (reify GLFWCursorPosCallbackI
+                                   (invoke [this window xpos ypos]
+                                     (swap! c/*state
+                                            (fn [state]
+                                              (let [*fb-width      (MemoryUtil/memAllocInt 1)
+                                                    *fb-height     (MemoryUtil/memAllocInt 1)
+                                                    *window-width  (MemoryUtil/memAllocInt 1)
+                                                    *window-height (MemoryUtil/memAllocInt 1)
+                                                    _              (GLFW/glfwGetFramebufferSize window *fb-width *fb-height)
+                                                    _              (GLFW/glfwGetWindowSize window *window-width *window-height)
+                                                    fb-width       (.get *fb-width)
+                                                    fb-height      (.get *fb-height)
+                                                    window-width   (.get *window-width)
+                                                    window-height  (.get *window-height)
+                                                    width-ratio    (/ fb-width window-width)
+                                                    height-ratio   (/ fb-height window-height)
+                                                    x              (* xpos width-ratio)
+                                                    y              (* ypos height-ratio)]
+                                                (MemoryUtil/memFree *fb-width)
+                                                (MemoryUtil/memFree *fb-height)
+                                                (MemoryUtil/memFree *window-width)
+                                                (MemoryUtil/memFree *window-height)
+                                                (assoc state :mouse-x x :mouse-y y))))))))
 
 (defn keycode->keyword [keycode]
   (condp = keycode
-    GLFW/GLFW_KEY_LEFT :left
+    GLFW/GLFW_KEY_LEFT  :left
     GLFW/GLFW_KEY_RIGHT :right
-    GLFW/GLFW_KEY_UP :up
+    GLFW/GLFW_KEY_UP    :up
     nil))
 
 (defn listen-for-keys [window]
   (GLFW/glfwSetKeyCallback window
-    (reify GLFWKeyCallbackI
-      (invoke [this window keycode scancode action mods]
-        (when-let [k (keycode->keyword keycode)]
-          (condp = action
-            GLFW/GLFW_PRESS (swap! c/*state update :pressed-keys conj k)
-            GLFW/GLFW_RELEASE (swap! c/*state update :pressed-keys disj k)
-            nil))))))
+                           (reify GLFWKeyCallbackI
+                             (invoke [this window keycode scancode action mods]
+                               (when-let [k (keycode->keyword keycode)]
+                                 (condp = action
+                                   GLFW/GLFW_PRESS   (swap! c/*state update :pressed-keys conj k)
+                                   GLFW/GLFW_RELEASE (swap! c/*state update :pressed-keys disj k)
+                                   nil))))))
 
 (defn play-music []
   (doto (AudioSystem/getClip)
@@ -93,4 +93,3 @@
       (GLFW/glfwDestroyWindow window)
       (GLFW/glfwTerminate))
     (throw (Exception. "Failed to create window"))))
-

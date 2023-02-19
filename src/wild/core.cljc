@@ -32,31 +32,31 @@
                   :invert (rand-nth [-1 1])
                   :speed (/ (utils/rand-range 1 5) 10)))))
 
-(defonce *state (atom {:lifecycle :start
-                       :score 0 ;; @TODO not sure if some of the stuff should be move
-                       :starting-time (utils/now)
-                       :mouse-x 0
-                       :mouse-y 0
-                       :pressed-keys #{}
-                       :x-velocity 0
-                       :y-velocity 0
-                       :player-x 20
-                       :player-y 0
-                       :player-width 1
-                       :player-height (/ 607 448) ;; ratio height / width
-                       :can-jump? false
-                       :started? false
-                       :direction :right
-                       :player-images {}
-                       :player-walk-keys [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster]
-                       :player-image-key :ninja-both-booster
-                       :tiled-map nil
-                       :tiled-map-entity nil
-                       :camera (e/->camera true)
+(defonce *state (atom {:lifecycle           :start
+                       :score               0 ;; @TODO not sure if some of the stuff should be move
+                       :starting-time       (utils/now)
+                       :mouse-x             0
+                       :mouse-y             0
+                       :pressed-keys        #{}
+                       :x-velocity          0
+                       :y-velocity          0
+                       :player-x            20
+                       :player-y            0
+                       :player-width        1
+                       :player-height       (/ 607 448) ;; ratio height / width
+                       :can-jump?           false
+                       :started?            false
+                       :direction           :right
+                       :player-images       {}
+                       :player-walk-keys    [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster]
+                       :player-image-key    :ninja-both-booster
+                       :tiled-map           nil
+                       :tiled-map-entity    nil
+                       :camera              (e/->camera true)
                        :target-color-weight 0
-                       :clouds (generate-clouds)
-                       :rewards []
-                       :killers []}))
+                       :clouds              (generate-clouds)
+                       :rewards             []
+                       :killers             []}))
 
 (def tiled-map (edn/read-string (read-tiled-map "level1.tmx")))
 
@@ -66,17 +66,17 @@
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
   ;; load images and put them in the state atom
-  (doseq [[k path] {:ninja-no-booster "ninja_hoverboard_none.png"
-                    :ninja-left-booster "ninja_hoverboard_left.png"
+  (doseq [[k path] {:ninja-no-booster    "ninja_hoverboard_none.png"
+                    :ninja-left-booster  "ninja_hoverboard_left.png"
                     :ninja-right-booster "ninja_hoverboard_right.png"
-                    :ninja-both-booster "ninja_hoverboard_both.png"
-                    :cloud-1 "cloud_pink.png"
-                    :cloud-2 "cloud_transparent.png"
-                    :game-over "game_over.png"
-                    :trophy "trophy.png"
-                    :ballon "ballon.png"
-                    :logo "title-small.png"
-                    :skull "skull.png"}]
+                    :ninja-both-booster  "ninja_hoverboard_both.png"
+                    :cloud-1             "cloud_pink.png"
+                    :cloud-2             "cloud_transparent.png"
+                    :game-over           "game_over.png"
+                    :trophy              "trophy.png"
+                    :ballon              "ballon.png"
+                    :logo                "title-small.png"
+                    :skull               "skull.png"}]
 
     (utils/get-image path
                      (fn [{:keys [data width height]}]
@@ -91,8 +91,8 @@
 
   ;; load the tiled map
   (tile/load-tiled-map game tiled-map
-    (fn [tiled-map entity]
-      (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
+                       (fn [tiled-map entity]
+                         (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
 
 (def color-blueish [0.68 0.85 0.92 1])
 (def color-dark-blue [0.18 0.25 0.32 1])
@@ -105,7 +105,7 @@
 
 (defn screen-entity [target-color-weight]
   {:viewport {:x 0 :y 0 :width 0 :height 0}
-   :clear {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
+   :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
 
 (defn total-score [{:keys [score starting-time]}]
   (+ score (quot (- (utils/now) starting-time) 100)))
