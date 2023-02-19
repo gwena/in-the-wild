@@ -1,4 +1,4 @@
-(ns wild.music
+(ns in-the-wild.music
   (:require [edna.core :as edna]
             [clojure.java.io :as io]))
 

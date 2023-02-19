@@ -20,10 +20,10 @@
   (delete-children-recursively! (io/file "resources/public/main.out"))
   (figwheel/-main "--build" "dev"))
 
-(require '[wild.start-dev])
+(require '[in-the-wild.start-dev])
 
 (defmethod task "native"
   [_]
-  (wild.start-dev/start))
+  (in-the-wild.start-dev/start))
 
 (task *command-line-args*)

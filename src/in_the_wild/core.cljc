@@ -1,14 +1,14 @@
-(ns wild.core
-  (:require [wild.utils :as utils]
-            [wild.move :as move]
+(ns in-the-wild.core
+  (:require [in-the-wild.utils :as utils]
+            [in-the-wild.move :as move]
             [clojure.edn :as edn]
             [play-cljc.gl.core :as c]
             [play-cljc.gl.entities-2d :as e]
             [play-cljc.transforms :as t]
             #?(:clj  [play-cljc.macros-java :refer [gl math]]
                :cljs [play-cljc.macros-js :refer-macros [gl math]])
-            #?(:clj  [wild.tile :as tile :refer [read-tiled-map]]
-               :cljs [wild.tile :as tile :refer-macros [read-tiled-map]])
+            #?(:clj  [in-the-wild.tile :as tile :refer [read-tiled-map]]
+               :cljs [in-the-wild.tile :as tile :refer-macros [read-tiled-map]])
             #?(:cljs [goog.dom :as dom])))
 
 (def cloud-pink-w 179)

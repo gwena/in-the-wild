@@ -1,6 +1,6 @@
-(ns wild.move
-  (:require [wild.utils :as utils]
-            [wild.tile :as tile]
+(ns in-the-wild.move
+  (:require [in-the-wild.utils :as utils]
+            [in-the-wild.tile :as tile]
             #?(:clj  [play-cljc.macros-java :refer [gl math]]
                :cljs [play-cljc.macros-js :refer-macros [gl math]])))
 

@@ -55,10 +55,10 @@
 (defmethod task nil
   [_]
   (let [out-file "resources/public/main.js"
-        out-dir "resources/public/main.out"]
+        out-dir  "resources/public/main.out"]
     (println "Building main.js")
     (delete-children-recursively! (io/file out-dir))
-    (api/build "src" {:main          'wild.start
+    (api/build "src" {:main          'in-the-wild.start
                       :optimizations :advanced
                       :output-to     out-file
                       :output-dir    out-dir})

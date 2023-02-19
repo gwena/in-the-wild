@@ -1,4 +1,4 @@
-(ns wild.utils
+(ns in-the-wild.utils
   #?(:clj (:require [clojure.java.io :as io]))
   #?(:clj (:import [java.nio ByteBuffer]
                    [org.lwjgl.glfw GLFW]

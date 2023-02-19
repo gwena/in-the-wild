@@ -1,6 +1,6 @@
-(ns wild.start
-  (:require [wild.core :as c]
-            [wild.music :as m]
+(ns in-the-wild.start
+  (:require [in-the-wild.core :as c]
+            [in-the-wild.music :as m]
             [play-cljc.gl.core :as pc])
   (:import  [org.lwjgl.glfw GLFW Callbacks GLFWCursorPosCallbackI GLFWKeyCallbackI]
             [org.lwjgl.opengl GL GL41]

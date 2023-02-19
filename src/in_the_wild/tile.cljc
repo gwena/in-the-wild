@@ -1,5 +1,5 @@
-(ns wild.tile
-  (:require [wild.utils :as utils]
+(ns in-the-wild.tile
+  (:require [in-the-wild.utils :as utils]
             [play-cljc.transforms :as t]
             [play-cljc.math :as m]
             [play-cljc.gl.core :as c]

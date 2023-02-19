@@ -1,8 +1,8 @@
-(ns wild.start
-  (:require [wild.core :as c]
+(ns in-the-wild.start
+  (:require [in-the-wild.core :as c]
             [play-cljc.gl.core :as pc]
             [goog.events :as events])
-  (:require-macros [wild.music :refer [build-for-cljs]]))
+  (:require-macros [in-the-wild.music :refer [build-for-cljs]]))
 
 (defn resize [{:keys [context] :as game}]
   (let [display-width  context.canvas.clientWidth
