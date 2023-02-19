@@ -5,3 +5,4 @@ resources/public/main.out/
 .cpcache
 .clj-kondo/
 .lsp/
+.nrepl-port
