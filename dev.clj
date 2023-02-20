@@ -5,25 +5,19 @@
   (println "Unknown task:" task-name)
   (System/exit 1))
 
-(require
-  '[figwheel.main :as figwheel]
-  '[clojure.java.io :as io])
-
-(defn delete-children-recursively! [f]
-  (when (.isDirectory f)
-    (doseq [f2 (.listFiles f)]
-      (delete-children-recursively! f2)))
-  (when (.exists f) (io/delete-file f)))
+(require '[figwheel.main :as figwheel])
 
 (defmethod task nil
   [_]
-  (delete-children-recursively! (io/file "resources/public/main.out"))
   (figwheel/-main "--build" "dev"))
-
-(require '[in-the-wild.start-dev])
 
 (defmethod task "native"
   [_]
-  (in-the-wild.start-dev/start))
+  (require '[in-the-wild.start-dev])
+  ((resolve 'in-the-wild.start-dev/start)))
+
+(defmethod task "repl"
+  [_]
+  (clojure.main/repl :init #(doto 'in-the-wild.start-dev require in-ns)))
 
 (task *command-line-args*)

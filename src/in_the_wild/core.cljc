@@ -110,7 +110,7 @@
 (defn total-score [{:keys [score starting-time]}]
   (+ score (quot (- (utils/now) starting-time) 100)))
 
-(defn run [game]
+(defn tick [game]
   (let [{:keys [lifecycle
                 endgame
                 player-x
