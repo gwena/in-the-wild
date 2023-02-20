@@ -15,23 +15,29 @@ To build the project, use the [Clojure CLI tool](https://clojure.org/guides/deps
 
 To develop in a browser with live code reloading:
 
-`clj -A:dev dev.clj`
+```
+clj -M:dev
+```
 
 
 To build a release version for the web:
 
-`clj -A:prod prod.clj`
+```
+clj -M:prod
+```
 
 
-To develop the native version on each OS:
+To develop the native version:
 
-`clj -A:dev:linux dev.clj native`
+```
+clj -M:dev native
+clj -M:dev:macos native # Warning for macos
 
-`clj -A:dev:macos -J-XstartOnFirstThread dev.clj native`
-
-`clj -A:dev:windows dev.clj native`
+```
 
 
 To build the native version as a jar file:
 
-`clj -A:prod prod.clj uberjar`
+```
+clj -M:prod uberjar
+```
