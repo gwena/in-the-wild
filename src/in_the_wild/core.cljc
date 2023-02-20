@@ -12,8 +12,8 @@
                :cljs [in-the-wild.tile :as tile :refer-macros [read-tiled-map]])
             #?(:cljs [goog.dom :as dom])))
 
-(def cloud-pink-w 179)
-(def cloud-pink-h 121)
+(def cloud-pink-w 256)
+(def cloud-pink-h 111)
 
 (def game-over-w 375)
 (def game-over-h 198)
@@ -71,8 +71,8 @@
                     :ninja-left-booster  "ninja-left-booster.png"
                     :ninja-right-booster "ninja-right-booster.png"
                     :ninja-both-booster  "ninja-both-booster.png"
-                    :cloud-1             "cloud_pink.png"
-                    :cloud-2             "cloud_transparent.png"
+                    :cloud-1             "cloud-1.png"
+                    :cloud-2             "cloud-2.png"
                     :game-over           "game-over.png"
                     :trophy              "power-pack.png"
                     :energy              "energy.png"
