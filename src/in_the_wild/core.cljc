@@ -74,7 +74,7 @@
                     :cloud-1             "cloud_pink.png"
                     :cloud-2             "cloud_transparent.png"
                     :game-over           "game-over.png"
-                    :trophy              "trophy.png"
+                    :trophy              "power-pack.png"
                     :ballon              "ballon.png"
                     :logo                "title-small.png"
                     :skull               "skull.png"}]
