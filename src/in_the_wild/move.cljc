@@ -44,9 +44,6 @@
     (< x-velocity 0) :left
     :else            direction))
 
-(defn abs [n]
-  (if (< n 0) (- n) n))
-
 (defn touch? [pl-x pl-y object-x object-y]
   (and (< (abs (- pl-x object-x)) 1)
        (< (abs (- pl-y object-y)) 1)))
