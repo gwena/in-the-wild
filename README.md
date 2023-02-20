@@ -2,7 +2,7 @@
 
 One-level-only platform game in Clojure(Script) using play-cljc.
 
-Help the Ninja, lost in the wild, collect the trophies :trophy: and avoid the skulls :skull:.
+Help the apprentice Ninja, lost in the wild, collect the hoverboard power-packs and avoid the skulls :skull:.
 
 ## Game Engine and Libraries
 
