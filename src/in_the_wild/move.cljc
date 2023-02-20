@@ -1,5 +1,5 @@
 (ns in-the-wild.move
-  (:require [in-the-wild.utils :as utils]
+  (:require [in-the-wild.helper :as helper]
             [in-the-wild.tile :as tile]
             #?(:clj  [play-cljc.macros-java :refer [gl math]]
                :cljs [play-cljc.macros-js :refer-macros [gl math]])))
@@ -99,13 +99,13 @@
         points          (* 500 (count (filter #(:points %) score-rewards)))
         updated-rewards (map #(dissoc % :points) score-rewards)
         new-reward      (if (> (rand 100) 82) {:type :trophy
-                                               :x    (utils/rand-span player-x 15) :y 0 :velocity-y (/ (utils/rand-range 1 4) 10)})] ;; @TODO when?
+                                               :x    (helper/rand-span player-x 15) :y 0 :velocity-y (/ (helper/rand-range 1 4) 10)})] ;; @TODO when?
     (assoc state
            :score (+ (:score state) points)
            :rewards (if new-reward (conj updated-rewards new-reward) updated-rewards)))) ;; @todo should be more idiomatic clojure
 
 (defn new-killer? [state]
-  (let [time (quot (- (utils/now) (:starting-time state)) 1000)]
+  (let [time (quot (- (helper/now) (:starting-time state)) 1000)]
     (cond (< time 30)  false
           (< time 300) (= (rand-int 10) 1)
           :else        (= (rand-int 5) 1))))
@@ -121,8 +121,8 @@
                             (not= (:lifecycle %) :splashed))
                      (assoc % :lifecycle :kill :velocity-y 0.002)
                      %)))
-        new-killer (if (new-killer? state)  {:y          0 :x (utils/rand-span player-x 10)
-                                             :velocity-y (/ (utils/rand-range 1 2) 10)})] ;; @TODO when?
+        new-killer (if (new-killer? state)  {:y          0 :x (helper/rand-span player-x 10)
+                                             :velocity-y (/ (helper/rand-range 1 2) 10)})] ;; @TODO when?
     (assoc state
            :killers (if new-killer (conj updated-killers new-killer) updated-killers)
            :lifecycle (if (some #(= (:lifecycle %) :kill) killers)
@@ -166,5 +166,5 @@
 (defn gameover
   [{:keys [lifecycle endgame] :as state}]
   (if (= lifecycle :game-over)
-    (assoc state :endgame (if endgame endgame (utils/now)))
+    (assoc state :endgame (if endgame endgame (helper/now)))
     state))

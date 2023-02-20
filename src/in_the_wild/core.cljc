@@ -1,5 +1,6 @@
 (ns in-the-wild.core
-  (:require [in-the-wild.utils :as utils]
+  (:require [in-the-wild.helper :as helper]
+            [in-the-wild.utils :as utils]
             [in-the-wild.move :as move]
             [clojure.edn :as edn]
             [play-cljc.gl.core :as c]
@@ -22,19 +23,19 @@
 (def title-h 46)
 
 (defn generate-clouds []
-  (let [nb-clouds (utils/rand-range 22 30)]
+  (let [nb-clouds (helper/rand-range 22 30)]
     (repeatedly nb-clouds
                 #(hash-map
                   :type (rand-nth [:cloud-1 :cloud-2])
                   :size (+ 0.20 (rand 1))
-                  :x (utils/rand-range 0 10000)
-                  :y (utils/rand-range 0 300)
+                  :x (helper/rand-range 0 10000)
+                  :y (helper/rand-range 0 300)
                   :invert (rand-nth [-1 1])
-                  :speed (/ (utils/rand-range 1 5) 10)))))
+                  :speed (/ (helper/rand-range 1 5) 10)))))
 
 (defonce *state (atom {:lifecycle           :start
                        :score               0 ;; @TODO not sure if some of the stuff should be move
-                       :starting-time       (utils/now)
+                       :starting-time       (helper/now)
                        :mouse-x             0
                        :mouse-y             0
                        :pressed-keys        #{}
@@ -108,7 +109,7 @@
    :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
 
 (defn total-score [{:keys [score starting-time]}]
-  (+ score (quot (- (utils/now) starting-time) 100)))
+  (+ score (quot (- (helper/now) starting-time) 100)))
 
 (defn tick [game]
   (let [{:keys [lifecycle
@@ -184,7 +185,7 @@
                       (t/scale 64 64))))
       rewards)
 
-    (when (and (= lifecycle :game-over) (< (- (utils/now) endgame) 5000))
+    (when (and (= lifecycle :game-over) (< (- (helper/now) endgame) 5000))
       (when-let [image (get player-images :game-over)]
         (c/render game
                   (-> image
