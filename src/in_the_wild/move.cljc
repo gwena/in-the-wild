@@ -94,7 +94,7 @@
              (filter #(and (> (:y %) 0)
                            (< (:y %) (:map-height tiled-map))))
              (map #(if (touch? px py (:x %) (:y %))
-                     (assoc % :velocity-y (- (:velocity-y %)) :type :ballon :points true)
+                     (assoc % :velocity-y (- (:velocity-y %)) :type :energy :points true)
                      %)))
         points          (* 500 (count (filter #(:points %) score-rewards)))
         updated-rewards (map #(dissoc % :points) score-rewards)
