@@ -58,7 +58,7 @@
                        :rewards             []
                        :killers             []}))
 
-(def tiled-map (edn/read-string (read-tiled-map "level1.tmx")))
+(def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
 (defn init [game]
   ;; allow transparency in images
