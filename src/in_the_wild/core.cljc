@@ -67,10 +67,10 @@
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
   ;; load images and put them in the state atom
-  (doseq [[k path] {:ninja-no-booster    "ninja_hoverboard_none.png"
-                    :ninja-left-booster  "ninja_hoverboard_left.png"
-                    :ninja-right-booster "ninja_hoverboard_right.png"
-                    :ninja-both-booster  "ninja_hoverboard_both.png"
+  (doseq [[k path] {:ninja-no-booster    "ninja-no-booster.png"
+                    :ninja-left-booster  "ninja-left-booster.png"
+                    :ninja-right-booster "ninja-right-booster.png"
+                    :ninja-both-booster  "ninja-both-booster.png"
                     :cloud-1             "cloud_pink.png"
                     :cloud-2             "cloud_transparent.png"
                     :game-over           "game-over.png"
