@@ -166,5 +166,5 @@
 (defn gameover
   [{:keys [lifecycle endgame] :as state}]
   (if (= lifecycle :game-over)
-    (assoc state :endgame (if endgame endgame (helper/now)))
+    (assoc state :endgame (or endgame (helper/now)))
     state))
