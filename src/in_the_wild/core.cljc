@@ -79,7 +79,7 @@
                     :logo                "title-small.png"
                     :skull               "skull.png"}]
 
-    (utils/get-image path
+    (utils/get-image (str "img/" path)
                      (fn [{:keys [data width height]}]
                        (let [;; create an image entity (a map with info necessary to display it)
                              entity (e/->image-entity game data width height)
