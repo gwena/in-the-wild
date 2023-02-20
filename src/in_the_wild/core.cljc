@@ -73,7 +73,7 @@
                     :ninja-both-booster  "ninja_hoverboard_both.png"
                     :cloud-1             "cloud_pink.png"
                     :cloud-2             "cloud_transparent.png"
-                    :game-over           "game_over.png"
+                    :game-over           "game-over.png"
                     :trophy              "trophy.png"
                     :ballon              "ballon.png"
                     :logo                "title-small.png"
