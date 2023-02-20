@@ -131,7 +131,7 @@
 
 (defn animate
   [{:keys [total-time]}
-   {:keys [lifecycle x-velocity y-velocity direction player-images player-walk-keys target-color-weight clouds] :as state}]
+   {:keys [lifecycle x-velocity y-velocity player-walk-keys target-color-weight clouds] :as state}]
   (let [direction (get-direction state)]
     (-> state
         (assoc :player-image-key
@@ -145,8 +145,7 @@
                  :ninja-no-booster))
         (assoc :direction direction)
         (assoc :target-color-weight (if (= lifecycle :game-over) (min 1.0 (+ target-color-weight 0.01)) target-color-weight))
-        (assoc :clouds
-               (map #(assoc % :x (+ (:x %) (:speed %))) clouds)))))
+        (assoc :clouds (map #(assoc % :x (+ (:x %) (:speed %))) clouds)))))
 
 ;; @TODO extract function to get value of field
 
@@ -157,13 +156,11 @@
   #?(:clj "Not implemented for clj"))
 
 (defn check
-  [{:keys [lifecycle killers endgame] :as state}]
-
+  [{:keys [lifecycle killers] :as state}]
   (if (= lifecycle :die)
-    (do
-      (assoc state
-             :lifecycle :game-over
-             :killers (map #(if (= (:lifecycle %) :kill) (assoc % :lifecycle :splashed) %) killers)))
+    (assoc state
+           :lifecycle :game-over
+           :killers (map #(if (= (:lifecycle %) :kill) (assoc % :lifecycle :splashed) %) killers))
     state))
 
 (defn gameover
