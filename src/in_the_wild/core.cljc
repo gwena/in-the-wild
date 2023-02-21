@@ -77,7 +77,7 @@
                     :trophy              "power-pack.png"
                     :energy              "energy.png"
                     :logo                "title-small.png"
-                    :skull               "skull.png"}]
+                    :weapon              "weapon-star.png"}]
 
     (utils/get-image (str "img/" path)
                      (fn [{:keys [data width height]}]
@@ -176,7 +176,7 @@
       rewards)
 
     (doseq [killer killers]
-      (when-let [image (get player-images :skull)]
+      (when-let [image (get player-images :weapon)]
         (c/render game
                   (-> image
                       (t/project game-width game-height)
