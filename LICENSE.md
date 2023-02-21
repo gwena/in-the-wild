@@ -12,6 +12,7 @@ Some portions reused from the public domain\
 (see https://github.com/oakes/play-cljc-examples#licensing)
 
 ## Graphics
+
 Graphics by:
 * gwena
 * gwena + DALL-E 2
