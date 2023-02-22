@@ -94,11 +94,11 @@
              (filter #(and (> (:y %) 0)
                            (< (:y %) (:map-height tiled-map))))
              (map #(if (touch? px py (:x %) (:y %))
-                     (assoc % :velocity-y (- (:velocity-y %)) :type :energy :points true)
+                     (assoc % :velocity-y (- (:velocity-y %)) :type :released-energy :points true)
                      %)))
         points          (* 500 (count (filter #(:points %) score-rewards)))
         updated-rewards (map #(dissoc % :points) score-rewards)
-        new-reward      (if (> (rand 100) 82) {:type :trophy
+        new-reward      (if (> (rand 100) 82) {:type :energy
                                                :x    (helper/rand-span player-x 15) :y 0 :velocity-y (/ (helper/rand-range 1 4) 10)})] ;; @TODO when?
     (assoc state
            :score (+ (:score state) points)

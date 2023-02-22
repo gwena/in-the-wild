@@ -67,16 +67,16 @@
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
   ;; load images and put them in the state atom
-  (doseq [[k path] {:ninja-no-booster    "ninja-no-booster.png"
+  (doseq [[k path] {:title               "title.png"
+                    :game-over           "game-over.png"
+                    :ninja-no-booster    "ninja-no-booster.png"
                     :ninja-left-booster  "ninja-left-booster.png"
                     :ninja-right-booster "ninja-right-booster.png"
                     :ninja-both-booster  "ninja-both-booster.png"
                     :cloud-1             "cloud-1.png"
                     :cloud-2             "cloud-2.png"
-                    :game-over           "game-over.png"
-                    :trophy              "power-pack.png"
                     :energy              "energy.png"
-                    :logo                "title-small.png"
+                    :released-energy     "released-energy.png"
                     :weapon              "weapon-star.png"}]
 
     (utils/get-image (str "img/" path)
@@ -195,7 +195,7 @@
                       (t/scale game-over-w game-over-h)))))
 
     (when display-title?
-      (when-let [image (get player-images :logo)]
+      (when-let [image (get player-images :title)]
         (c/render game
                   (-> image
                       (t/project game-width game-height)
