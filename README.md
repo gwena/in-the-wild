@@ -2,6 +2,8 @@
 
 One-level-only platform game in Clojure(Script) using play-cljc.
 
+![Alt text](doc/in-the-wild-ninja.png?raw=true "Apprentice Ninja")
+
 Help the apprentice Ninja, lost in the wild, collect the hoverboard power-packs and avoid the falling weapons.
 
 ## Game Engine and Libraries
