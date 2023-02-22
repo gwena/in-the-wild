@@ -19,6 +19,7 @@ Graphics by:
 * unknown, used under a non-exclusive perpetual licence granted by GameDev Network Limited\
   (see https://static.gamedevmarket.net/terms-conditions/#pro-licence \
   for purchases made after the 15th January 2019)
+* sungraphica - https://sungraphica.itch.io/tile-set-game-asset-free-version 
 
 ## Music
 
