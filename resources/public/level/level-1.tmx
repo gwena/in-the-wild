@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="212" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" name="Wild" tilewidth="16" tileheight="16" tilecount="988" columns="52">
-  <image source="../img/in-the-wild-tileset.png" trans="fe80fe" width="832" height="304"/>
+  <image source="level/in-the-wild-tileset.png" trans="fe80fe" width="832" height="304"/>
  </tileset>
  <layer id="1" name="background" width="212" height="20" opacity="0.9">
   <data encoding="base64">
