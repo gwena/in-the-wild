@@ -147,14 +147,6 @@
         (assoc :target-color-weight (if (= lifecycle :game-over) (min 1.0 (+ target-color-weight 0.01)) target-color-weight))
         (assoc :clouds (map #(assoc % :x (+ (:x %) (:speed %))) clouds)))))
 
-;; @TODO extract function to get value of field
-
-(defn player-info []
-  #?(:cljs (-> js/document
-               (.getElementById "name")
-               (.-value)))
-  #?(:clj "Not implemented for clj"))
-
 (defn check
   [{:keys [lifecycle killers] :as state}]
   (if (= lifecycle :die)
