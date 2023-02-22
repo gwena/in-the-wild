@@ -46,10 +46,10 @@ clj -M:prod uberjar
 
 ## Controls
 
-* <kbd>←</kbd> - Left
-* <kbd>→</kbd> - Right
-* <kbd>↑</kbd> - Jump
-* <kbd>&#128259;</kbd> - Restart the game (in the browser)
+* <kbd>:arrow_left:</kbd> - Left
+* <kbd>:arrow_right:</kbd> - Right
+* <kbd>:arrow_up:</kbd> - Jump
+* <kbd>:arrows_counterclockwise:</kbd> - Restart the game (in the browser)
 
 ## Origins
 
