@@ -8,8 +8,8 @@
             [play-cljc.transforms :as t]
             #?(:clj  [play-cljc.macros-java :refer [gl math]]
                :cljs [play-cljc.macros-js :refer-macros [gl math]])
-            #?(:clj  [in-the-wild.tile :as tile :refer [read-tiled-map]]
-               :cljs [in-the-wild.tile :as tile :refer-macros [read-tiled-map]])
+            #?(:clj  [in-the-wild.tiles :as tiles :refer [read-tiled-map]]
+               :cljs [in-the-wild.tiles :as tiles :refer-macros [read-tiled-map]])
             #?(:cljs [goog.dom :as dom])))
 
 (def cloud-pink-w 256)
@@ -91,9 +91,9 @@
                          (swap! *state update :player-images assoc k entity)))))
 
   ;; load the tiled map
-  (tile/load-tiled-map game tiled-map
-                       (fn [tiled-map entity]
-                         (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
+  (tiles/load-tiled-map game tiled-map
+                        (fn [tiled-map entity]
+                          (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
 
 (def color-blueish [0.68 0.85 0.92 1])
 (def color-dark-blue [0.18 0.25 0.32 1])

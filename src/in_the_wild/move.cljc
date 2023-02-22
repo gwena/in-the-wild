@@ -1,6 +1,6 @@
 (ns in-the-wild.move
   (:require [in-the-wild.helper :as helper]
-            [in-the-wild.tile :as tile]
+            [in-the-wild.tiles :as tiles]
             #?(:clj  [play-cljc.macros-java :refer [gl math]]
                :cljs [play-cljc.macros-js :refer-macros [gl math]])))
 
@@ -78,9 +78,9 @@
         old-y (- player-y y-change)
         up?   (neg? y-change)]
     (merge state
-           (when (tile/touching-tile? tiled-map "walls" player-x old-y player-width player-height)
+           (when (tiles/touching-tile? tiled-map "walls" player-x old-y player-width player-height)
              {:x-velocity 0 :x-change 0 :player-x old-x})
-           (when (tile/touching-tile? tiled-map "walls" old-x player-y player-width player-height)
+           (when (tiles/touching-tile? tiled-map "walls" old-x player-y player-width player-height)
              {:y-velocity 0         :y-change 0 :player-y old-y
               :can-jump?  (not up?) :started? true}))))
 
