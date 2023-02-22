@@ -6,7 +6,9 @@ Help the apprentice Ninja, lost in the wild, collect the hoverboard power-packs 
 
 ## Game Engine and Libraries
 
-The game library/engine used is [play-cljc](https://github.com/oakes/play-cljc) and [play-cljc-examples](https://github.com/oakes/play-cljc-examples) provided a great initial starting point, and boilerplate.
+The game library/engine used is [play-cljc](https://github.com/oakes/play-cljc), _A library for making games that run in both OpenGL and WebGL_, by Zach Oakes. For the other libraries used with play-cljc, check the section [Companion Libraries](https://github.com/oakes/play-cljc#companion-libraries).
+
+The repo [play-cljc-examples](https://github.com/oakes/play-cljc-examples) provided a good initial starting point, and some of the boilerplate code is still used.
 
 ## Build and Run
 
@@ -41,3 +43,16 @@ To build the native version as a jar file:
 ```
 clj -M:prod uberjar
 ```
+
+## Controls
+
+* <kbd>←</kbd> - Left
+* <kbd>→</kbd> - Right
+* <kbd>↑</kbd> - Jump
+* <kbd>&#128259;</kbd> - Restart the game (in the browser)
+
+## Origins
+
+In April 2019, I attended the interesting and entertaining talk _How I Supercharged Learning Clojure through Gamification_ by [@ladymeyy](https://twitter.com/ladymeyy) at the Dutch Clojure Days 2019 in Amsterdam. Thought it would be fun to write a little game in Clojure (with my limited experience at the time). Two weeks later, I was away for the Easter weekend and during my daughter's afternoon naps, I wrote this little game.
+
+The title, _in the wild_, is a reference to the sections of the same name in the enjoyable book from Russ Olsen _Getting Clojure_.
