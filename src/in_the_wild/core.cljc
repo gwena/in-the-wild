@@ -39,7 +39,7 @@
                   :speed (/ (helper/rand-range 1 5) 10)))))
 
 (defonce *state (atom {:lifecycle           :start
-                       :score               0 ;; @TODO not sure if some of the stuff should be move
+                       :score               0
                        :start-time          (helper/now)
                        :mouse-x             0
                        :mouse-y             0
@@ -229,7 +229,6 @@
                            (t/translate 30 80)))))
 
     (when-let [player (get player-images player-image-key)]
-      ;; render the player
       (c/render game
                 (-> player
                     (t/project game-width game-height)
