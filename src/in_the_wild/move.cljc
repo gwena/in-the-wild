@@ -37,9 +37,9 @@
 (defn get-direction
   [{:keys [x-velocity direction]}]
   (cond
-    (> x-velocity 0) :right
-    (< x-velocity 0) :left
-    :else            direction))
+    (pos? x-velocity) :right
+    (neg? x-velocity) :left
+    :else             direction))
 
 (defn touch?
   [pl-x pl-y object-x object-y]
@@ -89,13 +89,13 @@
         game-over?      (= lifecycle :game-over)
         score-rewards
         (->> rewards
-             (map #(assoc % :y (+ (:y %) (:velocity-y %))))
-             (filter #(and (> (:y %) 0)
+             (map #(update % :y + (:velocity-y %)))
+             (filter #(and (pos? (:y %))
                            (< (:y %) (:map-height tiled-map))))
              (map #(if (and (not game-over?) (touch? px py (:x %) (:y %)) (= :energy (:type %)))
                      (assoc % :velocity-y (- (:velocity-y %)) :type :released-energy :points true)
                      %)))
-        points          (if game-over? 0 (* 500 (count (filter #(:points %) score-rewards))))
+        points          (if game-over? 0 (* 500 (count (filter :points score-rewards))))
         updated-rewards (map #(dissoc % :points) score-rewards)]
     (assoc state
            :score (+ (:score state) points)
@@ -116,8 +116,8 @@
   [{:keys [killers tiled-map player-x player-y] :as state}]
   (let [updated-killers
         (->> killers
-             (map #(assoc % :y (+ (:y %) (:velocity-y %))))
-             (filter #(and (> (:y %) 0)
+             (map #(update % :y + (:velocity-y %)))
+             (filter #(and (pos? (:y %))
                            (< (:y %) (:map-height tiled-map))))
              (map #(if (and (touch? player-x player-y (:x %) (:y %))
                             (not= (:lifecycle %) :splashed))
@@ -149,7 +149,7 @@
                  :ninja-no-booster))
         (assoc :direction direction)
         (assoc :target-color-weight (if (= lifecycle :game-over) (min 1.0 (+ target-color-weight 0.01)) target-color-weight))
-        (assoc :clouds (map #(assoc % :x (+ (:x %) (:speed %))) clouds)))))
+        (assoc :clouds (map #(update % :x + (:speed %)) clouds)))))
 
 (defn check
   [{:keys [lifecycle killers] :as state}]
