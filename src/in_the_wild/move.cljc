@@ -97,12 +97,15 @@
                      (assoc % :velocity-y (- (:velocity-y %)) :type :released-energy :points true)
                      %)))
         points          (* 500 (count (filter #(:points %) score-rewards)))
-        updated-rewards (map #(dissoc % :points) score-rewards)
-        new-reward      (if (> (rand 100) 82) {:type :energy
-                                               :x    (helper/rand-span player-x 15) :y 0 :velocity-y (/ (helper/rand-range 1 4) 10)})] ;; @TODO when?
+        updated-rewards (map #(dissoc % :points) score-rewards)]
     (assoc state
            :score (+ (:score state) points)
-           :rewards (if new-reward (conj updated-rewards new-reward) updated-rewards)))) ;; @todo should be more idiomatic clojure
+           :rewards (if (> (rand 100) 82)
+                      (conj updated-rewards {:type       :energy
+                                             :x          (helper/rand-span player-x 15)
+                                             :y          0
+                                             :velocity-y (/ (helper/rand-range 1 4) 10)})
+                      updated-rewards))))
 
 (defn new-killer? [state]
   (let [time (quot (- (helper/now) (:start-time state)) 1000)]
@@ -120,11 +123,13 @@
              (map #(if (and (touch? player-x player-y (:x %) (:y %))
                             (not= (:lifecycle %) :splashed))
                      (assoc % :lifecycle :kill :velocity-y 0.002)
-                     %)))
-        new-killer (if (new-killer? state)  {:y          0 :x (helper/rand-span player-x 10)
-                                             :velocity-y (/ (helper/rand-range 1 2) 10)})] ;; @TODO when?
+                     %)))]
     (assoc state
-           :killers (if new-killer (conj updated-killers new-killer) updated-killers)
+           :killers (if (new-killer? state)
+                      (conj updated-killers {:y          0
+                                             :x          (helper/rand-span player-x 10)
+                                             :velocity-y (/ (helper/rand-range 1 2) 10)})
+                      updated-killers)
            :lifecycle (if (some #(= (:lifecycle %) :kill) killers)
                         :die
                         (:lifecycle state))))) ;; similar as above: more idiomatic
