@@ -85,18 +85,19 @@
               :can-jump?  (not up?) :started? true}))))
 
 (defn drop-rewards
-  [{:keys [rewards tiled-map player-x player-y] :as state}]
+  [{:keys [lifecycle rewards tiled-map player-x player-y] :as state}]
   (let [px              (int player-x)
         py              (int player-y)
+        game-over?      (= lifecycle :game-over)
         score-rewards
         (->> rewards
              (map #(assoc % :y (+ (:y %) (:velocity-y %))))
              (filter #(and (> (:y %) 0)
                            (< (:y %) (:map-height tiled-map))))
-             (map #(if (and (touch? px py (:x %) (:y %)) (= :energy (:type %)))
+             (map #(if (and (not game-over?) (touch? px py (:x %) (:y %)) (= :energy (:type %)))
                      (assoc % :velocity-y (- (:velocity-y %)) :type :released-energy :points true)
                      %)))
-        points          (* 500 (count (filter #(:points %) score-rewards)))
+        points          (if game-over? 0 (* 500 (count (filter #(:points %) score-rewards))))
         updated-rewards (map #(dissoc % :points) score-rewards)]
     (assoc state
            :score (+ (:score state) points)
