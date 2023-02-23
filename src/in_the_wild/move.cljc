@@ -164,3 +164,15 @@
   (if (= lifecycle :game-over)
     (assoc state :end-time (or end-time (helper/now)))
     state))
+
+(defn move-all
+  [game]
+  (fn [state]
+    (->> state
+         (move game)
+         (prevent-move)
+         (drop-rewards)
+         (drop-killers)
+         (animate game)
+         (check)
+         (game-over))))

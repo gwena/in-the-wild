@@ -239,17 +239,7 @@
                     #_(t/rotate (if (= direction :left) -10 10))
                     (t/scale (cond-> player-width
                                (= direction :left) (* -1))
-                             player-height)))
+                             player-height)))))
 
-      ;; change the state to move the player
-      (swap! *state
-             (fn [state]
-               (->> state
-                    (move/move game)
-                    (move/prevent-move)
-                    (move/drop-rewards)
-                    (move/drop-killers)
-                    (move/animate game)
-                    (move/check)
-                    (move/game-over))))))
+  (swap! *state (move/move-all game))
   game)
