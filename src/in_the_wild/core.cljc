@@ -40,7 +40,7 @@
 
 (defonce *state (atom {:lifecycle           :start
                        :score               0 ;; @TODO not sure if some of the stuff should be move
-                       :starting-time       (helper/now)
+                       :start-time          (helper/now)
                        :mouse-x             0
                        :mouse-y             0
                        :pressed-keys        #{}
@@ -123,14 +123,14 @@
   {:viewport {:x 0 :y 0 :width 0 :height 0}
    :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
 
-(defn total-score [{:keys [score starting-time]}]
-  (+ score (quot (- (helper/now) starting-time) 100)))
+(defn total-score [{:keys [score start-time end-time]}]
+  (+ score (quot (- (or end-time (helper/now)) start-time) 100)))
 
 (defn tick [game]
   (let [{:keys [font-entity
                 dynamic-entity
                 lifecycle
-                endgame
+                end-time
                 player-x
                 player-y
                 player-width
@@ -202,7 +202,7 @@
                       (t/scale 64 64))))
       rewards)
 
-    (when (and (= lifecycle :game-over) (< (- (helper/now) endgame) 5000))
+    (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
       (when-let [image (get player-images :game-over)]
         (c/render game
                   (-> image

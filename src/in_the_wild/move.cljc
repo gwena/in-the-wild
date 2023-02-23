@@ -105,7 +105,7 @@
            :rewards (if new-reward (conj updated-rewards new-reward) updated-rewards)))) ;; @todo should be more idiomatic clojure
 
 (defn new-killer? [state]
-  (let [time (quot (- (helper/now) (:starting-time state)) 1000)]
+  (let [time (quot (- (helper/now) (:start-time state)) 1000)]
     (cond (< time 30)  false
           (< time 300) (= (rand-int 10) 1)
           :else        (= (rand-int 5) 1))))
@@ -156,7 +156,7 @@
     state))
 
 (defn gameover
-  [{:keys [lifecycle endgame] :as state}]
+  [{:keys [lifecycle end-time] :as state}]
   (if (= lifecycle :game-over)
-    (assoc state :endgame (or endgame (helper/now)))
+    (assoc state :end-time (or end-time (helper/now)))
     state))
