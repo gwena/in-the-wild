@@ -161,7 +161,7 @@
            :killers (map #(if (= (:lifecycle %) :kill) (assoc % :lifecycle :splashed) %) killers))
     state))
 
-(defn gameover
+(defn game-over
   [{:keys [lifecycle end-time] :as state}]
   (if (= lifecycle :game-over)
     (assoc state :end-time (or end-time (helper/now)))

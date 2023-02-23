@@ -251,5 +251,5 @@
                     (move/drop-killers)
                     (move/animate game)
                     (move/check)
-                    (move/gameover))))))
+                    (move/game-over))))))
   game)
