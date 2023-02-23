@@ -9,12 +9,11 @@
             [play-cljc.gl.text :as text]
             [play-cljc.instances :as i]
             [play-cljc.transforms :as t]
-            #?(:clj  [play-cljc.macros-java :refer [gl math]]
-               :cljs [play-cljc.macros-js :refer-macros [gl math]])
+            #?(:clj  [play-cljc.macros-java :refer [gl]]
+               :cljs [play-cljc.macros-js :refer-macros [gl]])
             #?(:clj  [in-the-wild.tiles :as tiles :refer [read-tiled-map]]
                :cljs [in-the-wild.tiles :as tiles :refer-macros [read-tiled-map]])
-            #?(:clj [in-the-wild.ext.text :refer [load-font-clj]])
-            #?(:cljs [goog.dom :as dom]))
+            #?(:clj [in-the-wild.ext.text :refer [load-font-clj]]))
   #?(:cljs (:require-macros [in-the-wild.ext.text :refer [load-font-cljs]])))
 
 (def cloud-pink-w 256)

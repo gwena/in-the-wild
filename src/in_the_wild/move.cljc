@@ -9,8 +9,7 @@
 (def ^:const gravity 2.5)
 (def ^:const animation-secs 0.2)
 
-(defn decelerate
-  [velocity]
+(defn decelerate [velocity]
   (let [velocity (* velocity deceleration)]
     (if (< (abs velocity) damping)
       0
@@ -42,7 +41,8 @@
     (< x-velocity 0) :left
     :else            direction))
 
-(defn touch? [pl-x pl-y object-x object-y]
+(defn touch?
+  [pl-x pl-y object-x object-y]
   (and (< (abs (- pl-x object-x)) 1)
        (< (abs (- pl-y object-y)) 1)))
 
@@ -165,8 +165,7 @@
     (assoc state :end-time (or end-time (helper/now)))
     state))
 
-(defn move-all
-  [game]
+(defn move-all [game]
   (fn [state]
     (->> state
          (move game)
