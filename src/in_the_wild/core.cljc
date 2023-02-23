@@ -1,16 +1,21 @@
 (ns in-the-wild.core
-  (:require [in-the-wild.helper :as helper]
+  (:require [in-the-wild.ext.chars :as chars]
+            [in-the-wild.helper :as helper]
             [in-the-wild.utils :as utils]
             [in-the-wild.move :as move]
             [clojure.edn :as edn]
             [play-cljc.gl.core :as c]
             [play-cljc.gl.entities-2d :as e]
+            [play-cljc.gl.text :as text]
+            [play-cljc.instances :as i]
             [play-cljc.transforms :as t]
             #?(:clj  [play-cljc.macros-java :refer [gl math]]
                :cljs [play-cljc.macros-js :refer-macros [gl math]])
             #?(:clj  [in-the-wild.tiles :as tiles :refer [read-tiled-map]]
                :cljs [in-the-wild.tiles :as tiles :refer-macros [read-tiled-map]])
-            #?(:cljs [goog.dom :as dom])))
+            #?(:clj [in-the-wild.ext.text :refer [load-font-clj]])
+            #?(:cljs [goog.dom :as dom]))
+  #?(:cljs (:require-macros [in-the-wild.ext.text :refer [load-font-cljs]])))
 
 (def cloud-pink-w 256)
 (def cloud-pink-h 111)
@@ -66,6 +71,16 @@
   (gl game enable (gl game BLEND))
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
+  ;; load font
+  (#?(:clj load-font-clj :cljs load-font-cljs)
+   :blox-brk
+   (fn [{:keys [data]} baked-font]
+     (let [font-entity    (text/->font-entity game data baked-font)
+           dynamic-entity (c/compile game (i/->instanced-entity font-entity))]
+       (swap! *state assoc
+              :font-entity font-entity
+              :dynamic-entity dynamic-entity))))
+
   ;; load images and put them in the state atom
   (doseq [[k path] {:title               "title.png"
                     :game-over           "game-over.png"
@@ -112,7 +127,9 @@
   (+ score (quot (- (helper/now) starting-time) 100)))
 
 (defn tick [game]
-  (let [{:keys [lifecycle
+  (let [{:keys [font-entity
+                dynamic-entity
+                lifecycle
                 endgame
                 player-x
                 player-y
@@ -203,10 +220,16 @@
                       (t/translate (+ pos-x 10) 10)
                       (t/scale title-w title-h)))))
 
-    ;; update score
-    (when (not= lifecycle :game-over)
-      #?(:cljs (dom/setTextContent (.getElementById js/document "score") (total-score state)))
-      #?(:clj (println (total-score state))))
+    ;; render score
+    (when dynamic-entity
+      (let [score (str (total-score state))]
+        (c/render game (-> (reduce
+                            (partial apply chars/assoc-char)
+                            dynamic-entity
+                            (for [char-num (range (count score))]
+                              [0 char-num (chars/crop-char font-entity (get score char-num))]))
+                           (t/project game-width game-height)
+                           (t/translate 30 80)))))
 
     (when-let [player (get player-images player-image-key)]
       ;; render the player
