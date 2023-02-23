@@ -21,6 +21,10 @@ Graphics by:
   for purchases made after the 15th January 2019)
 * sungraphica - https://sungraphica.itch.io/tile-set-game-asset-free-version 
 
+## Font
+
+* Blox Brk Font by Brian Kent - Freeware 
+
 ## Music
 
 Public domain (see https://github.com/oakes/edna#licensing)
