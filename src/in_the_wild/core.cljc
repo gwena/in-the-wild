@@ -179,8 +179,7 @@
                       (t/camera camera)
                       (t/translate (:x cloud) (:y cloud))
                       (t/scale (* (:size cloud) (:invert cloud) cloud-pink-w)
-                               (* (:size cloud) cloud-pink-h)))))
-      clouds)
+                               (* (:size cloud) cloud-pink-h))))))
 
     (doseq [reward rewards]
       (when-let [image (get player-images (:type reward))]
@@ -189,8 +188,7 @@
                       (t/project game-width game-height)
                       (t/camera camera)
                       (t/translate (* (:x reward) tile-size) (* (:y reward) tile-size))
-                      (t/scale 64 64))))
-      rewards)
+                      (t/scale 64 64)))))
 
     (doseq [killer killers]
       (when-let [image (get player-images :weapon)]
@@ -199,8 +197,7 @@
                       (t/project game-width game-height)
                       (t/camera camera)
                       (t/translate (* (:x killer) tile-size) (* (:y killer) tile-size))
-                      (t/scale 64 64))))
-      rewards)
+                      (t/scale 64 64)))))
 
     (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
       (when-let [image (get player-images :game-over)]
