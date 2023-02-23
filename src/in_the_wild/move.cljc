@@ -1,8 +1,6 @@
 (ns in-the-wild.move
   (:require [in-the-wild.helper :as helper]
-            [in-the-wild.tiles :as tiles]
-            #?(:clj  [play-cljc.macros-java :refer [gl math]]
-               :cljs [play-cljc.macros-js :refer-macros [gl math]])))
+            [in-the-wild.tiles :as tiles]))
 
 (def ^:const damping 0.1)
 (def ^:const max-velocity 14)
@@ -14,7 +12,7 @@
 (defn decelerate
   [velocity]
   (let [velocity (* velocity deceleration)]
-    (if (< (math abs velocity) damping)
+    (if (< (abs velocity) damping)
       0
       velocity)))
 
