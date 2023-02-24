@@ -15,11 +15,13 @@
       0
       velocity)))
 
-#_(defn pause? [state]
-    (assoc state :pause (not (:pause state)))
-    #_(if (contains? (:pressed-keys state) :down)
-        (assoc state :pause (not (:pause state)))
-        state))
+(defn check-pause
+  [{:keys [pressed-keys pause?] :as state}]
+  (let [space? (contains? pressed-keys :space)]
+    (assoc state :pause?
+           (if pause?
+             (not (and (not-empty pressed-keys) (not space?)))
+             space?))))
 
 (defn get-x-velocity
   [{:keys [pressed-keys x-velocity]}]
@@ -151,7 +153,7 @@
         (assoc :target-color-weight (if (= lifecycle :game-over) (min 1.0 (+ target-color-weight 0.01)) target-color-weight))
         (assoc :clouds (map #(update % :x + (:speed %)) clouds)))))
 
-(defn check
+(defn check-die
   [{:keys [lifecycle killers] :as state}]
   (if (= lifecycle :die)
     (assoc state
@@ -166,12 +168,15 @@
     state))
 
 (defn move-all [game]
-  (fn [state]
-    (->> state
-         (move game)
-         (prevent-move)
-         (drop-rewards)
-         (drop-killers)
-         (animate game)
-         (check)
-         (game-over))))
+  (fn [init-state]
+    (let [{:keys [pause?] :as state} (check-pause init-state)]
+      (if pause?
+        state
+        (->> state
+             (move game)
+             (prevent-move)
+             (drop-rewards)
+             (drop-killers)
+             (animate game)
+             (check-die)
+             (game-over))))))

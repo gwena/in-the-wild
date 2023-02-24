@@ -51,7 +51,8 @@ clj -M:prod uberjar
 * <kbd>:arrow_left:</kbd> - Left
 * <kbd>:arrow_right:</kbd> - Right
 * <kbd>:arrow_up:</kbd> - Jump
-* <kbd>:arrows_counterclockwise:</kbd> - Restart the game (in the browser)
+* <kbd>:arrows_counterclockwise:</kbd> - Restart game (in the browser)
+* <kbd>spacebar</kbd> - Pause game
 
 ## Origins
 
