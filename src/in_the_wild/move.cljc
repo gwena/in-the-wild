@@ -30,9 +30,9 @@
 
 (defn get-y-velocity
   [{:keys [pressed-keys y-velocity can-jump?]}]
-  (cond
-    (and can-jump? (contains? pressed-keys :up)) (* -1 max-jump-velocity)
-    :else                                        y-velocity))
+  (if (and can-jump? (contains? pressed-keys :up))
+    (* -1 max-jump-velocity)
+    y-velocity))
 
 (defn get-direction
   [{:keys [x-velocity direction]}]
