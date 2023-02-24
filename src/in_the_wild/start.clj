@@ -52,10 +52,11 @@
 
 (defn keycode->keyword [keycode]
   (condp = keycode
-    GLFW/GLFW_KEY_LEFT :left
+    GLFW/GLFW_KEY_LEFT  :left
     GLFW/GLFW_KEY_RIGHT :right
-    GLFW/GLFW_KEY_UP :up
-    GLFW/GLFW_KEY_DOWN :down
+    GLFW/GLFW_KEY_UP    :up
+    GLFW/GLFW_KEY_DOWN  :down
+    GLFW/GLFW_KEY_SPACE :space
     nil))
 
 (defn on-key! [window keycode scancode action mods]

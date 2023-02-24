@@ -33,6 +33,7 @@
     37 :left
     39 :right
     38 :up
+    32 :space
     nil))
 
 (defn listen-for-keys []
