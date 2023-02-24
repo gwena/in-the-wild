@@ -46,6 +46,10 @@ To build the native version as a jar file:
 clj -M:prod uberjar
 ```
 
+## Play
+
+[play online version](http://gwena.github.io/in-the-wild)
+
 ## Controls
 
 * <kbd>:arrow_left:</kbd> - Left
