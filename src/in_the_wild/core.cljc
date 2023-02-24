@@ -122,9 +122,6 @@
   {:viewport {:x 0 :y 0 :width 0 :height 0}
    :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
 
-(defn total-score [{:keys [score start-time end-time]}]
-  (+ score (quot (- (or end-time (helper/now)) start-time) 100)))
-
 (defn tick [game]
   (let [{:keys [font-entity
                 dynamic-entity
@@ -218,7 +215,7 @@
 
     ;; render score
     (when dynamic-entity
-      (let [score (str (total-score state))]
+      (let [score (str (:score state))]
         (c/render game (-> (reduce
                             (partial apply chars/assoc-char)
                             dynamic-entity
