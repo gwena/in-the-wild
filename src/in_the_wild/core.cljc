@@ -64,6 +64,27 @@
 
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
+(def images
+  {:title               nil
+   :game-over           nil
+   :ninja-no-booster    nil
+   :ninja-left-booster  nil
+   :ninja-right-booster nil
+   :ninja-both-booster  nil
+   :cloud-1             nil
+   :cloud-2             nil
+   :energy              nil
+   :released-energy     nil
+   :weapon              {:file "five-blades-star" :size 2}})
+
+(def expand-images
+  (->> images
+       (mapcat (fn [[k v]] (if (map? v)
+                            (for [i (range 0 (:size v))]
+                              [(keyword (str (name k) "-" i)) (str (:file v) "-" i ".png")])
+                            [[k v]])))
+       (into {})))
+
 (defn init [game]
   ;; allow transparency in images
   (gl game enable (gl game BLEND))
@@ -80,29 +101,18 @@
               :dynamic-entity dynamic-entity))))
 
   ;; load images and put them in the state atom
-  (doseq [[k path] {:title               "title.png"
-                    :game-over           "game-over.png"
-                    :ninja-no-booster    "ninja-no-booster.png"
-                    :ninja-left-booster  "ninja-left-booster.png"
-                    :ninja-right-booster "ninja-right-booster.png"
-                    :ninja-both-booster  "ninja-both-booster.png"
-                    :cloud-1             "cloud-1.png"
-                    :cloud-2             "cloud-2.png"
-                    :energy              "energy.png"
-                    :released-energy     "released-energy.png"
-                    :weapon-0            "five-blades-star-0.png"
-                    :weapon-1            "five-blades-star-1.png"}]
-
-    (utils/get-image (str "img/" path)
-                     (fn [{:keys [data width height]}]
-                       (let [;; create an image entity (a map with info necessary to display it)
-                             entity (e/->image-entity game data width height)
-                             ;; compile the shaders so it is ready to render
-                             entity (c/compile game entity)
-                             ;; assoc the width and height to we can reference it later
-                             entity (assoc entity :width width :height height)]
-                         ;; add it to the state
-                         (swap! *state update :player-images assoc k entity)))))
+  (doseq [[k path] expand-images]
+    (let [filename (or path (str (name k) ".png"))]
+      (utils/get-image (str "img/" filename)
+                       (fn [{:keys [data width height]}]
+                         (let [;; create an image entity (a map with info necessary to display it)
+                               entity (e/->image-entity game data width height)
+                               ;; compile the shaders so it is ready to render
+                               entity (c/compile game entity)
+                               ;; assoc the width and height to we can reference it later
+                               entity (assoc entity :width width :height height)]
+                           ;; add it to the state
+                           (swap! *state update :player-images assoc k entity))))))
 
   ;; load the tiled map
   (tiles/load-tiled-map game tiled-map
@@ -113,14 +123,14 @@
 (def color-dark-blue [0.18 0.25 0.32 1])
 
 (defn color-transform [from to to-weight]
-  (let [from-weight (- 1.0 to-weight)
-        components  (map vector from to)]
-    (into [] (map #(+ (* (first %) from-weight) (* (last %) to-weight))
-                  components))))
+(let [from-weight (- 1.0 to-weight)
+      components  (map vector from to)]
+  (into [] (map #(+ (* (first %) from-weight) (* (last %) to-weight))
+                components))))
 
 (defn screen-entity [target-color-weight]
-  {:viewport {:x 0 :y 0 :width 0 :height 0}
-   :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
+{:viewport {:x 0 :y 0 :width 0 :height 0}
+ :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
 
 (defn tick [game]
   (let [{:keys [font-entity
@@ -142,98 +152,98 @@
                 rewards
                 killers]
          :as   state} @*state
-        game-width    (utils/get-width game)
-        game-height   (utils/get-height game)
-        offset        (/ game-width 2)
-        tile-size     (/ game-height (:map-height tiled-map))
-        player-x      (* player-x tile-size)
-        player-y      (* player-y tile-size)
-        player-width  (* player-width tile-size)
-        player-height (* player-height tile-size)
-        pos-x         (- player-x offset)
-        camera        (t/translate camera (- player-x offset) 0)]
+      game-width    (utils/get-width game)
+      game-height   (utils/get-height game)
+      offset        (/ game-width 2)
+      tile-size     (/ game-height (:map-height tiled-map))
+      player-x      (* player-x tile-size)
+      player-y      (* player-y tile-size)
+      player-width  (* player-width tile-size)
+      player-height (* player-height tile-size)
+      pos-x         (- player-x offset)
+      camera        (t/translate camera (- player-x offset) 0)]
 
-    ;; render sky
-    (c/render game (update (screen-entity target-color-weight) :viewport
-                           assoc :width game-width :height game-height))
-    ;; render the tiled map
-    (when tiled-map-entity
-      (c/render game (-> tiled-map-entity
-                         (t/project game-width game-height)
-                         (t/camera camera)
-                         (t/scale
-                          (* (/ (:width tiled-map-entity)
-                                (:height tiled-map-entity))
-                             game-height)
-                          game-height))))
+  ;; render sky
+  (c/render game (update (screen-entity target-color-weight) :viewport
+                         assoc :width game-width :height game-height))
+  ;; render the tiled map
+  (when tiled-map-entity
+    (c/render game (-> tiled-map-entity
+                       (t/project game-width game-height)
+                       (t/camera camera)
+                       (t/scale
+                        (* (/ (:width tiled-map-entity)
+                              (:height tiled-map-entity))
+                           game-height)
+                        game-height))))
 
-    (doseq [cloud clouds]
-      (when-let [image (get player-images (:type cloud))]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (:x cloud) (:y cloud))
-                      (t/scale (* (:size cloud) (:invert cloud) cloud-pink-w)
-                               (* (:size cloud) cloud-pink-h))))))
-
-    (doseq [reward rewards]
-      (when-let [image (get player-images (:type reward))]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (* (:x reward) tile-size) (* (:y reward) tile-size))
-                      (t/scale 64 64)))))
-
-    (doseq [killer killers]
-      (when-let [image (get player-images (keyword (str "weapon-" (:cycle killer))))]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (* (:x killer) tile-size) (* (:y killer) tile-size))
-                      (t/scale 64 64)))))
-
-    (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
-      (when-let [image (get player-images :game-over)]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (- player-x (/ game-over-w 2)) (/ (- game-height game-over-h) 2))
-                      (t/scale game-over-w game-over-h)))))
-
-    (when-let [image (get player-images :title)]
+  (doseq [cloud clouds]
+    (when-let [image (get player-images (:type cloud))]
       (c/render game
                 (-> image
                     (t/project game-width game-height)
                     (t/camera camera)
-                    (t/translate (+ pos-x 10) 10)
-                    (t/scale title-w title-h))))
+                    (t/translate (:x cloud) (:y cloud))
+                    (t/scale (* (:size cloud) (:invert cloud) cloud-pink-w)
+                             (* (:size cloud) cloud-pink-h))))))
 
-    ;; render score
-    (when dynamic-entity
-      (let [score (str (:score state))]
-        (c/render game (-> (reduce
-                            (partial apply chars/assoc-char)
-                            dynamic-entity
-                            (for [char-num (range (count score))]
-                              [0 char-num (chars/crop-char font-entity (get score char-num))]))
-                           (t/project game-width game-height)
-                           (t/translate 30 80)))))
-
-    (when-let [player (get player-images player-image-key)]
+  (doseq [reward rewards]
+    (when-let [image (get player-images (:type reward))]
       (c/render game
-                (-> player
+                (-> image
                     (t/project game-width game-height)
                     (t/camera camera)
-                    (t/translate (cond-> player-x
-                                   (= direction :left) (+ player-width))
-                                 player-y)
-                    (t/scale (cond-> player-width
-                               (= direction :left) (* -1))
-                             player-height)))))
+                    (t/translate (* (:x reward) tile-size) (* (:y reward) tile-size))
+                    (t/scale 64 64)))))
+
+  (doseq [killer killers]
+    (when-let [image (get player-images (keyword (str "weapon-" (:cycle killer))))]
+      (c/render game
+                (-> image
+                    (t/project game-width game-height)
+                    (t/camera camera)
+                    (t/translate (* (:x killer) tile-size) (* (:y killer) tile-size))
+                    (t/scale 64 64)))))
+
+  (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
+    (when-let [image (get player-images :game-over)]
+      (c/render game
+                (-> image
+                    (t/project game-width game-height)
+                    (t/camera camera)
+                    (t/translate (- player-x (/ game-over-w 2)) (/ (- game-height game-over-h) 2))
+                    (t/scale game-over-w game-over-h)))))
+
+  (when-let [image (get player-images :title)]
+    (c/render game
+              (-> image
+                  (t/project game-width game-height)
+                  (t/camera camera)
+                  (t/translate (+ pos-x 10) 10)
+                  (t/scale title-w title-h))))
+
+  ;; render score
+  (when dynamic-entity
+    (let [score (str (:score state))]
+      (c/render game (-> (reduce
+                          (partial apply chars/assoc-char)
+                          dynamic-entity
+                          (for [char-num (range (count score))]
+                            [0 char-num (chars/crop-char font-entity (get score char-num))]))
+                         (t/project game-width game-height)
+                         (t/translate 30 80)))))
+
+  (when-let [player (get player-images player-image-key)]
+    (c/render game
+              (-> player
+                  (t/project game-width game-height)
+                  (t/camera camera)
+                  (t/translate (cond-> player-x
+                                 (= direction :left) (+ player-width))
+                               player-y)
+                  (t/scale (cond-> player-width
+                             (= direction :left) (* -1))
+                           player-height)))))
 
   (swap! *state (move/move-all game))
   game)
