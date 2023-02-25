@@ -52,7 +52,6 @@
                        :started?            false
                        :direction           :right
                        :player-images       {}
-                       :player-walk-keys    [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster]
                        :player-image-key    :ninja-both-booster
                        :tiled-map           nil
                        :tiled-map-entity    nil
@@ -65,17 +64,12 @@
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
 (def images
-  {:title               nil
-   :game-over           nil
-   :ninja-no-booster    nil
-   :ninja-left-booster  nil
-   :ninja-right-booster nil
-   :ninja-both-booster  nil
-   :cloud-1             nil
-   :cloud-2             nil
-   :energy              nil
-   :released-energy     nil
-   :weapon              {:file "five-blades-star" :size 2}})
+  (->> [:title :game-over :cloud-1 :cloud-2 :energy :released-energy]
+       (concat move/ninja-modes)
+       (map #(vector % nil))
+       (into {})
+       (merge
+        {:weapon {:file "five-blades-star" :size 2}})))
 
 (def expand-images
   (->> images

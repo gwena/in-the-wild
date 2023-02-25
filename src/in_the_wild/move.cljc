@@ -9,6 +9,8 @@
 (def ^:const gravity 2.5)
 (def ^:const animation-secs 0.2)
 
+(def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
+
 (defn decelerate [velocity]
   (let [velocity (* velocity deceleration)]
     (if (< (abs velocity) damping)
@@ -139,7 +141,7 @@
 
 (defn animate
   [{:keys [total-time]}
-   {:keys [lifecycle x-velocity y-velocity player-walk-keys target-color-weight clouds] :as state}]
+   {:keys [lifecycle x-velocity y-velocity target-color-weight clouds] :as state}]
   (let [direction (get-direction state)]
     (-> state
         (assoc :player-image-key
@@ -147,8 +149,8 @@
                  (not= y-velocity 0)
                  :ninja-both-booster
                  (not= x-velocity 0)
-                 (let [cycle-time (mod total-time (* animation-secs (count player-walk-keys)))]
-                   (nth player-walk-keys (int (/ cycle-time animation-secs))))
+                 (let [cycle-time (mod total-time (* animation-secs (count ninja-modes)))]
+                   (nth ninja-modes (int (/ cycle-time animation-secs))))
                  :else
                  :ninja-no-booster))
         (assoc :direction direction)
