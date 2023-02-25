@@ -133,6 +133,7 @@
    :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
 
 (defn render [game camera {:keys [img gw gh w h x y]}]
+  ;; TODO could abstract gw, gh, and use keyword for img, see also w h as optional
   (when img
     (c/render game
               (-> img
@@ -175,59 +176,57 @@
     ;; render sky
     (c/render game (update (screen-entity target-color-weight) :viewport
                            assoc :width game-width :height game-height))
-    ;; render the tiled map
-    (when tiled-map-entity
-      (c/render game (-> tiled-map-entity
-                         (t/project game-width game-height)
-                         (t/camera camera)
-                         (t/scale
-                          (* (/ (:width tiled-map-entity)
-                                (:height tiled-map-entity))
-                             game-height)
-                          game-height))))
+
+    (render game camera
+            {:img tiled-map-entity
+             :gw  game-width  :gh game-height
+             :w   (* (/ (:width tiled-map-entity)
+                        (:height tiled-map-entity))
+                     game-height)
+             :h   game-height :x  0 :y 0})
 
     (doseq [cloud clouds]
-      (when-let [image (get player-images (:type cloud))]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (:x cloud) (:y cloud))
-                      (t/scale (* (:size cloud) (:invert cloud) cloud-pink-w)
-                               (* (:size cloud) cloud-pink-h))))))
+      (render game camera
+              {:img (get player-images (:type cloud))
+               :gw  game-width :gh game-height
+               :w   (* (:size cloud) (:invert cloud) cloud-pink-w)
+               :h   (* (:size cloud) cloud-pink-h)
+               :x   (:x cloud) :y  (:y cloud) }))
 
     (doseq [reward rewards]
-      (when-let [image (get player-images (:type reward))]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (* (:x reward) tile-size) (* (:y reward) tile-size))
-                      (t/scale 64 64)))))
+      (render game camera
+              {:img (get player-images (:type reward))
+               :gw  game-width                :gh game-height
+               :w   64                        :h  64
+               :x   (* (:x reward) tile-size) :y  (* (:y reward) tile-size)}))
 
     (doseq [killer killers]
-      (when-let [image (get player-images (keyword (str "weapon-" (quot (:cycle killer) 15))))]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (* (:x killer) tile-size) (* (:y killer) tile-size))
-                      (t/scale 64 64)))))
+      (render game camera
+              {:img (get player-images (keyword (str "weapon-" (quot (:cycle killer) 15))))
+               :gw  game-width                :gh game-height
+               :w   64                        :h  64
+               :x   (* (:x killer) tile-size) :y  (* (:y killer) tile-size)}))
 
     (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
-      (when-let [image (get player-images :game-over)]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (- player-x (/ game-over-w 2)) (/ (- game-height game-over-h) 2))
-                      (t/scale game-over-w game-over-h)))))
+      (render game camera
+              {:img (get player-images :game-over)
+               :gw  game-width                     :gh game-height
+               :w   game-over-w                    :h  game-over-h
+               :x   (- player-x (/ game-over-w 2)) :y  (/ (- game-height game-over-h) 2)}))
 
     (render game camera
             {:img (get player-images :title)
              :gw  game-width   :gh game-height
              :w   title-w      :h  title-h
              :x   (+ pos-x 10) :y  10})
+
+    (render game camera
+            {:img (get player-images player-image-key)
+             :gw  game-width :gh game-height
+             :w   (cond-> player-width (= direction :left) (* -1))
+             :h   player-height
+             :x   (cond-> player-x (= direction :left) (+ player-width))
+             :y   player-y})
 
     ;; render score
     (when dynamic-entity
@@ -238,19 +237,7 @@
                             (for [char-num (range (count score))]
                               [0 char-num (chars/crop-char font-entity (get score char-num))]))
                            (t/project game-width game-height)
-                           (t/translate 30 80)))))
-
-    (when-let [player (get player-images player-image-key)]
-      (c/render game
-                (-> player
-                    (t/project game-width game-height)
-                    (t/camera camera)
-                    (t/translate (cond-> player-x
-                                   (= direction :left) (+ player-width))
-                                 player-y)
-                    (t/scale (cond-> player-width
-                               (= direction :left) (* -1))
-                             player-height)))))
+                           (t/translate 30 80))))))
 
   (swap! *state (move/move-all game))
   game)
