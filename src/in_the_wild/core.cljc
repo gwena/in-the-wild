@@ -152,98 +152,98 @@
                 rewards
                 killers]
          :as   state} @*state
-      game-width    (utils/get-width game)
-      game-height   (utils/get-height game)
-      offset        (/ game-width 2)
-      tile-size     (/ game-height (:map-height tiled-map))
-      player-x      (* player-x tile-size)
-      player-y      (* player-y tile-size)
-      player-width  (* player-width tile-size)
-      player-height (* player-height tile-size)
-      pos-x         (- player-x offset)
-      camera        (t/translate camera (- player-x offset) 0)]
+        game-width    (utils/get-width game)
+        game-height   (utils/get-height game)
+        offset        (/ game-width 2)
+        tile-size     (/ game-height (:map-height tiled-map))
+        player-x      (* player-x tile-size)
+        player-y      (* player-y tile-size)
+        player-width  (* player-width tile-size)
+        player-height (* player-height tile-size)
+        pos-x         (- player-x offset)
+        camera        (t/translate camera (- player-x offset) 0)]
 
-  ;; render sky
-  (c/render game (update (screen-entity target-color-weight) :viewport
-                         assoc :width game-width :height game-height))
-  ;; render the tiled map
-  (when tiled-map-entity
-    (c/render game (-> tiled-map-entity
-                       (t/project game-width game-height)
-                       (t/camera camera)
-                       (t/scale
-                        (* (/ (:width tiled-map-entity)
-                              (:height tiled-map-entity))
-                           game-height)
-                        game-height))))
-
-  (doseq [cloud clouds]
-    (when-let [image (get player-images (:type cloud))]
-      (c/render game
-                (-> image
-                    (t/project game-width game-height)
-                    (t/camera camera)
-                    (t/translate (:x cloud) (:y cloud))
-                    (t/scale (* (:size cloud) (:invert cloud) cloud-pink-w)
-                             (* (:size cloud) cloud-pink-h))))))
-
-  (doseq [reward rewards]
-    (when-let [image (get player-images (:type reward))]
-      (c/render game
-                (-> image
-                    (t/project game-width game-height)
-                    (t/camera camera)
-                    (t/translate (* (:x reward) tile-size) (* (:y reward) tile-size))
-                    (t/scale 64 64)))))
-
-  (doseq [killer killers]
-    (when-let [image (get player-images (keyword (str "weapon-" (:cycle killer))))]
-      (c/render game
-                (-> image
-                    (t/project game-width game-height)
-                    (t/camera camera)
-                    (t/translate (* (:x killer) tile-size) (* (:y killer) tile-size))
-                    (t/scale 64 64)))))
-
-  (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
-    (when-let [image (get player-images :game-over)]
-      (c/render game
-                (-> image
-                    (t/project game-width game-height)
-                    (t/camera camera)
-                    (t/translate (- player-x (/ game-over-w 2)) (/ (- game-height game-over-h) 2))
-                    (t/scale game-over-w game-over-h)))))
-
-  (when-let [image (get player-images :title)]
-    (c/render game
-              (-> image
-                  (t/project game-width game-height)
-                  (t/camera camera)
-                  (t/translate (+ pos-x 10) 10)
-                  (t/scale title-w title-h))))
-
-  ;; render score
-  (when dynamic-entity
-    (let [score (str (:score state))]
-      (c/render game (-> (reduce
-                          (partial apply chars/assoc-char)
-                          dynamic-entity
-                          (for [char-num (range (count score))]
-                            [0 char-num (chars/crop-char font-entity (get score char-num))]))
+    ;; render sky
+    (c/render game (update (screen-entity target-color-weight) :viewport
+                           assoc :width game-width :height game-height))
+    ;; render the tiled map
+    (when tiled-map-entity
+      (c/render game (-> tiled-map-entity
                          (t/project game-width game-height)
-                         (t/translate 30 80)))))
+                         (t/camera camera)
+                         (t/scale
+                          (* (/ (:width tiled-map-entity)
+                                (:height tiled-map-entity))
+                             game-height)
+                          game-height))))
 
-  (when-let [player (get player-images player-image-key)]
-    (c/render game
-              (-> player
-                  (t/project game-width game-height)
-                  (t/camera camera)
-                  (t/translate (cond-> player-x
-                                 (= direction :left) (+ player-width))
-                               player-y)
-                  (t/scale (cond-> player-width
-                             (= direction :left) (* -1))
-                           player-height)))))
+    (doseq [cloud clouds]
+      (when-let [image (get player-images (:type cloud))]
+        (c/render game
+                  (-> image
+                      (t/project game-width game-height)
+                      (t/camera camera)
+                      (t/translate (:x cloud) (:y cloud))
+                      (t/scale (* (:size cloud) (:invert cloud) cloud-pink-w)
+                               (* (:size cloud) cloud-pink-h))))))
+
+    (doseq [reward rewards]
+      (when-let [image (get player-images (:type reward))]
+        (c/render game
+                  (-> image
+                      (t/project game-width game-height)
+                      (t/camera camera)
+                      (t/translate (* (:x reward) tile-size) (* (:y reward) tile-size))
+                      (t/scale 64 64)))))
+
+    (doseq [killer killers]
+      (when-let [image (get player-images (keyword (str "weapon-" (quot (:cycle killer) 15))))]
+        (c/render game
+                  (-> image
+                      (t/project game-width game-height)
+                      (t/camera camera)
+                      (t/translate (* (:x killer) tile-size) (* (:y killer) tile-size))
+                      (t/scale 64 64)))))
+
+    (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
+      (when-let [image (get player-images :game-over)]
+        (c/render game
+                  (-> image
+                      (t/project game-width game-height)
+                      (t/camera camera)
+                      (t/translate (- player-x (/ game-over-w 2)) (/ (- game-height game-over-h) 2))
+                      (t/scale game-over-w game-over-h)))))
+
+    (when-let [image (get player-images :title)]
+      (c/render game
+                (-> image
+                    (t/project game-width game-height)
+                    (t/camera camera)
+                    (t/translate (+ pos-x 10) 10)
+                    (t/scale title-w title-h))))
+
+    ;; render score
+    (when dynamic-entity
+      (let [score (str (:score state))]
+        (c/render game (-> (reduce
+                            (partial apply chars/assoc-char)
+                            dynamic-entity
+                            (for [char-num (range (count score))]
+                              [0 char-num (chars/crop-char font-entity (get score char-num))]))
+                           (t/project game-width game-height)
+                           (t/translate 30 80)))))
+
+    (when-let [player (get player-images player-image-key)]
+      (c/render game
+                (-> player
+                    (t/project game-width game-height)
+                    (t/camera camera)
+                    (t/translate (cond-> player-x
+                                   (= direction :left) (+ player-width))
+                                 player-y)
+                    (t/scale (cond-> player-width
+                               (= direction :left) (* -1))
+                             player-height)))))
 
   (swap! *state (move/move-all game))
   game)
