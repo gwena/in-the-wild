@@ -50,7 +50,7 @@
                        :started?            false
                        :direction           :right
                        :player-images       {}
-                       :player-image-key    :ninja-both-booster
+                       :ninja-mode          :ninja-both-booster
                        :tiled-map           nil
                        :tiled-map-entity    nil
                        :camera              (e/->camera true)
@@ -145,7 +145,7 @@
                 player-height
                 direction
                 player-images
-                player-image-key
+                ninja-mode
                 tiled-map
                 tiled-map-entity
                 camera
@@ -213,7 +213,7 @@
              :x   (+ pos-x 10) :y  10})
 
     (render game camera
-            {:img (get player-images player-image-key)
+            {:img (get player-images ninja-mode)
              :gw  game-width :gh game-height
              :w   (cond-> player-width (= direction :left) (* -1))
              :h   player-height

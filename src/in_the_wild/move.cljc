@@ -144,7 +144,7 @@
    {:keys [lifecycle x-velocity y-velocity target-color-weight clouds] :as state}]
   (let [direction (get-direction state)]
     (-> state
-        (assoc :player-image-key
+        (assoc :ninja-mode
                (cond
                  (not= y-velocity 0)
                  :ninja-both-booster
