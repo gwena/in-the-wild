@@ -61,16 +61,11 @@
 
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
-(def images
+(def image-keys->filenames
   (->> [:title :game-over :cloud-1 :cloud-2 :energy :released-energy]
        (concat move/ninja-modes)
        (map #(vector % nil))
-       (into {})
-       (merge
-        {:weapon {:file "five-blades-star" :size 2}})))
-
-(def expand-images
-  (->> images
+       (concat [[:weapon {:file "five-blades-star" :size 2}]])
        (mapcat (fn [[k v]] (if (map? v)
                             (for [i (range 0 (:size v))]
                               [(keyword (str (name k) "-" i)) (str (:file v) "-" i ".png")])
@@ -93,7 +88,7 @@
               :dynamic-entity dynamic-entity))))
 
   ;; load images and put them in the state atom
-  (doseq [[k path] expand-images]
+  (doseq [[k path] image-keys->filenames]
     (let [filename (or path (str (name k) ".png"))]
       (utils/get-image (str "img/" filename)
                        (fn [{:keys [data width height]}]
