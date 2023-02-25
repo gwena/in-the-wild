@@ -49,7 +49,7 @@
                        :can-jump?           false
                        :started?            false
                        :direction           :right
-                       :player-images       {}
+                       :images              {}
                        :ninja-mode          :ninja-both-booster
                        :tiled-map           nil
                        :tiled-map-entity    nil
@@ -104,7 +104,7 @@
                                ;; assoc the width and height to we can reference it later
                                entity (assoc entity :width width :height height)]
                            ;; add it to the state
-                           (swap! *state update :player-images assoc k entity))))))
+                           (swap! *state update :images assoc k entity))))))
 
   ;; load the tiled map
   (tiles/load-tiled-map game tiled-map
@@ -144,7 +144,7 @@
                 player-width
                 player-height
                 direction
-                player-images
+                images
                 ninja-mode
                 tiled-map
                 tiled-map-entity
@@ -179,7 +179,7 @@
 
     (doseq [cloud clouds]
       (render game camera
-              {:img (get player-images (:type cloud))
+              {:img (get images (:type cloud))
                :gw  game-width :gh game-height
                :w   (* (:size cloud) (:invert cloud) cloud-pink-w)
                :h   (* (:size cloud) cloud-pink-h)
@@ -187,33 +187,33 @@
 
     (doseq [reward rewards]
       (render game camera
-              {:img (get player-images (:type reward))
+              {:img (get images (:type reward))
                :gw  game-width                :gh game-height
                :w   64                        :h  64
                :x   (* (:x reward) tile-size) :y  (* (:y reward) tile-size)}))
 
     (doseq [killer killers]
       (render game camera
-              {:img (get player-images (keyword (str "weapon-" (quot (:cycle killer) 15))))
+              {:img (get images (keyword (str "weapon-" (quot (:cycle killer) 15))))
                :gw  game-width                :gh game-height
                :w   64                        :h  64
                :x   (* (:x killer) tile-size) :y  (* (:y killer) tile-size)}))
 
     (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
       (render game camera
-              {:img (get player-images :game-over)
+              {:img (get images :game-over)
                :gw  game-width                     :gh game-height
                :w   game-over-w                    :h  game-over-h
                :x   (- player-x (/ game-over-w 2)) :y  (/ (- game-height game-over-h) 2)}))
 
     (render game camera
-            {:img (get player-images :title)
+            {:img (get images :title)
              :gw  game-width   :gh game-height
              :w   title-w      :h  title-h
              :x   (+ pos-x 10) :y  10})
 
     (render game camera
-            {:img (get player-images ninja-mode)
+            {:img (get images ninja-mode)
              :gw  game-width :gh game-height
              :w   (cond-> player-width (= direction :left) (* -1))
              :h   player-height
