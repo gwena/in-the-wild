@@ -22,7 +22,6 @@
 (def game-over-w 375)
 (def game-over-h 198)
 
-(def display-title? true)
 (def title-w 200)
 (def title-h 46)
 
@@ -205,14 +204,13 @@
                       (t/translate (- player-x (/ game-over-w 2)) (/ (- game-height game-over-h) 2))
                       (t/scale game-over-w game-over-h)))))
 
-    (when display-title?
-      (when-let [image (get player-images :title)]
-        (c/render game
-                  (-> image
-                      (t/project game-width game-height)
-                      (t/camera camera)
-                      (t/translate (+ pos-x 10) 10)
-                      (t/scale title-w title-h)))))
+    (when-let [image (get player-images :title)]
+      (c/render game
+                (-> image
+                    (t/project game-width game-height)
+                    (t/camera camera)
+                    (t/translate (+ pos-x 10) 10)
+                    (t/scale title-w title-h))))
 
     ;; render score
     (when dynamic-entity
@@ -233,7 +231,6 @@
                     (t/translate (cond-> player-x
                                    (= direction :left) (+ player-width))
                                  player-y)
-                    #_(t/rotate (if (= direction :left) -10 10))
                     (t/scale (cond-> player-width
                                (= direction :left) (* -1))
                              player-height)))))
