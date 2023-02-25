@@ -6,3 +6,7 @@ resources/public/main.out/
 .clj-kondo/
 .lsp/
 .nrepl-port
+
+# Simplify use of Tiled and Gimp
+*.xcf
+resources/public/level/level
