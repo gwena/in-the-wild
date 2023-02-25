@@ -39,8 +39,6 @@
 (defonce *state (atom {:lifecycle           :start
                        :score               0
                        :start-time          (helper/now)
-                       :mouse-x             0
-                       :mouse-y             0
                        :pressed-keys        #{}
                        :x-velocity          0
                        :y-velocity          0
