@@ -91,7 +91,8 @@
                     :cloud-2             "cloud-2.png"
                     :energy              "energy.png"
                     :released-energy     "released-energy.png"
-                    :weapon              "weapon-star.png"}]
+                    :weapon-0            "five-blades-star-0.png"
+                    :weapon-1            "five-blades-star-1.png"}]
 
     (utils/get-image (str "img/" path)
                      (fn [{:keys [data width height]}]
@@ -187,7 +188,7 @@
                       (t/scale 64 64)))))
 
     (doseq [killer killers]
-      (when-let [image (get player-images :weapon)]
+      (when-let [image (get player-images (keyword (str "weapon-" (:cycle killer))))]
         (c/render game
                   (-> image
                       (t/project game-width game-height)

@@ -119,6 +119,7 @@
   (let [updated-killers
         (->> killers
              (map #(update % :y + (:velocity-y %)))
+             (map #(update % :cycle (fn [c] (mod (inc c) 2))))
              (filter #(and (pos? (:y %))
                            (< (:y %) (:map-height tiled-map))))
              (map #(if (and (touch? player-x player-y (:x %) (:y %))
@@ -129,7 +130,8 @@
            :killers (if (new-killer? state)
                       (conj updated-killers {:y          0
                                              :x          (helper/rand-span player-x 10)
-                                             :velocity-y (/ (helper/rand-range 1 2) 10)})
+                                             :velocity-y (/ (helper/rand-range 1 2) 10)
+                                             :cycle      0})
                       updated-killers)
            :lifecycle (if (some #(= (:lifecycle %) :kill) killers)
                         :die
