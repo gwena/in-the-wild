@@ -123,14 +123,23 @@
 (def color-dark-blue [0.18 0.25 0.32 1])
 
 (defn color-transform [from to to-weight]
-(let [from-weight (- 1.0 to-weight)
-      components  (map vector from to)]
-  (into [] (map #(+ (* (first %) from-weight) (* (last %) to-weight))
-                components))))
+  (let [from-weight (- 1.0 to-weight)
+        components  (map vector from to)]
+    (into [] (map #(+ (* (first %) from-weight) (* (last %) to-weight))
+                  components))))
 
 (defn screen-entity [target-color-weight]
-{:viewport {:x 0 :y 0 :width 0 :height 0}
- :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
+  {:viewport {:x 0 :y 0 :width 0 :height 0}
+   :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
+
+(defn render [game camera {:keys [img gw gh w h x y]}]
+  (when img
+    (c/render game
+              (-> img
+                  (t/project gw gh)
+                  (t/camera camera)
+                  (t/translate x y)
+                  (t/scale w h)))))
 
 (defn tick [game]
   (let [{:keys [font-entity
@@ -214,13 +223,11 @@
                       (t/translate (- player-x (/ game-over-w 2)) (/ (- game-height game-over-h) 2))
                       (t/scale game-over-w game-over-h)))))
 
-    (when-let [image (get player-images :title)]
-      (c/render game
-                (-> image
-                    (t/project game-width game-height)
-                    (t/camera camera)
-                    (t/translate (+ pos-x 10) 10)
-                    (t/scale title-w title-h))))
+    (render game camera
+            {:img (get player-images :title)
+             :gw  game-width   :gh game-height
+             :w   title-w      :h  title-h
+             :x   (+ pos-x 10) :y  10})
 
     ;; render score
     (when dynamic-entity
