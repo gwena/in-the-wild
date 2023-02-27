@@ -16,15 +16,6 @@
             #?(:clj [in-the-wild.ext.text :refer [load-font-clj]]))
   #?(:cljs (:require-macros [in-the-wild.ext.text :refer [load-font-cljs]])))
 
-(def cloud-pink-w 256)
-(def cloud-pink-h 111)
-
-(def game-over-w 375)
-(def game-over-h 198)
-
-(def title-w 200)
-(def title-h 46)
-
 (defn generate-clouds []
   (let [nb-clouds (helper/rand-range 22 30)]
     (repeatedly nb-clouds
@@ -124,7 +115,7 @@
                   (t/project gw gh)
                   (t/camera camera)
                   (t/translate x y)
-                  (t/scale w h)))))
+                  (t/scale (or w (:width img)) (or h (:height img)))))))
 
 (defn tick [game]
   (let [{:keys [font-entity
@@ -171,37 +162,35 @@
 
     (doseq [cloud clouds]
       (render game camera
-              {:img (get images (:type cloud))
-               :gw  game-width :gh game-height
-               :w   (* (:size cloud) (:invert cloud) cloud-pink-w)
-               :h   (* (:size cloud) cloud-pink-h)
-               :x   (:x cloud) :y  (:y cloud) }))
+              (let [{:keys [width height] :as img} (get images (:type cloud))]
+                {:img img
+                 :gw  game-width :gh game-height
+                 :w   (* (:size cloud) (:invert cloud) width)
+                 :h   (* (:size cloud) height)
+                 :x   (:x cloud) :y  (:y cloud)})))
 
     (doseq [reward rewards]
       (render game camera
               {:img (get images (:type reward))
                :gw  game-width                :gh game-height
-               :w   64                        :h  64
                :x   (* (:x reward) tile-size) :y  (* (:y reward) tile-size)}))
 
     (doseq [killer killers]
       (render game camera
               {:img (get images (keyword (str "weapon-" (quot (:cycle killer) 15))))
                :gw  game-width                :gh game-height
-               :w   64                        :h  64
                :x   (* (:x killer) tile-size) :y  (* (:y killer) tile-size)}))
 
     (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
       (render game camera
-              {:img (get images :game-over)
-               :gw  game-width                     :gh game-height
-               :w   game-over-w                    :h  game-over-h
-               :x   (- player-x (/ game-over-w 2)) :y  (/ (- game-height game-over-h) 2)}))
+              (let [{:keys [width height] :as img} (get images :game-over)]
+                {:img img
+                 :gw  game-width               :gh game-height
+                 :x   (- player-x (/ width 2)) :y  (/ (- game-height height) 2)})))
 
     (render game camera
             {:img (get images :title)
              :gw  game-width   :gh game-height
-             :w   title-w      :h  title-h
              :x   (+ pos-x 10) :y  10})
 
     (render game camera
