@@ -20,21 +20,21 @@
 
 (defn listen-for-mouse [canvas]
   (events/listen js/window "mousemove"
-    (fn [event]
-      (swap! c/*state
-        (fn [state]
-          (let [bounds (.getBoundingClientRect canvas)
-                x (- (.-clientX event) (.-left bounds))
-                y (- (.-clientY event) (.-top bounds))]
-            (assoc state :mouse-x x :mouse-y y)))))))
+                 (fn [event]
+                   (swap! c/*state
+                          (fn [state]
+                            (let [bounds (.getBoundingClientRect canvas)
+                                  x      (- (.-clientX event) (.-left bounds))
+                                  y      (- (.-clientY event) (.-top bounds))]
+                              (assoc state :mouse-x x :mouse-y y)))))))
+(def keycode-keyword-map
+  {37 :left
+   39 :right
+   38 :up
+   32 :space})
 
 (defn keycode->keyword [keycode]
-  (condp = keycode
-    37 :left
-    39 :right
-    38 :up
-    32 :space
-    nil))
+  (get keycode-keyword-map keycode))
 
 (defn listen-for-keys []
   (events/listen js/window "keydown"

@@ -50,14 +50,15 @@
   (swap! c/*state assoc :mouse-button (when (= action GLFW/GLFW_PRESS)
                                         (mousecode->keyword button))))
 
+(def keycode-keyword-map
+  {GLFW/GLFW_KEY_LEFT  :left
+   GLFW/GLFW_KEY_RIGHT :right
+   GLFW/GLFW_KEY_UP    :up
+   GLFW/GLFW_KEY_DOWN  :down
+   GLFW/GLFW_KEY_SPACE :space})
+
 (defn keycode->keyword [keycode]
-  (condp = keycode
-    GLFW/GLFW_KEY_LEFT  :left
-    GLFW/GLFW_KEY_RIGHT :right
-    GLFW/GLFW_KEY_UP    :up
-    GLFW/GLFW_KEY_DOWN  :down
-    GLFW/GLFW_KEY_SPACE :space
-    nil))
+  (get keycode-keyword-map keycode))
 
 (defn on-key! [window keycode scancode action mods]
   (when-let [k (keycode->keyword keycode)]
