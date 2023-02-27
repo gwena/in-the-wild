@@ -69,7 +69,7 @@
        (mapcat (fn [[k v]] (if (map? v)
                             (for [i (range 0 (:size v))]
                               [(keyword (str (name k) "-" i)) (str (:file v) "-" i ".png")])
-                            [[k v]])))
+                            [[k (or v (str (name k) ".png"))]])))
        (into {})))
 
 (defn init [game]
@@ -87,19 +87,16 @@
               :font-entity font-entity
               :dynamic-entity dynamic-entity))))
 
-  ;; load images and put them in the state atom
-  (doseq [[k path] image-keys->filenames]
-    (let [filename (or path (str (name k) ".png"))]
-      (utils/get-image (str "img/" filename)
-                       (fn [{:keys [data width height]}]
-                         (let [;; create an image entity (a map with info necessary to display it)
-                               entity (e/->image-entity game data width height)
-                               ;; compile the shaders so it is ready to render
-                               entity (c/compile game entity)
-                               ;; assoc the width and height to we can reference it later
-                               entity (assoc entity :width width :height height)]
-                           ;; add it to the state
-                           (swap! *state update :images assoc k entity))))))
+  (doseq [[k filename] image-keys->filenames]
+    (utils/get-image (str "img/" filename)
+                     (fn [{:keys [data width height]}]
+                       (let [;; create an image entity (a map with info necessary to display it)
+                             entity (e/->image-entity game data width height)
+                             ;; compile the shaders so it is ready to render
+                             entity (c/compile game entity)
+                             ;; assoc the width and height to we can reference it later
+                             entity (assoc entity :width width :height height)]
+                         (swap! *state update :images assoc k entity)))))
 
   ;; load the tiled map
   (tiles/load-tiled-map game tiled-map
