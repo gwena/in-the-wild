@@ -56,7 +56,7 @@
   (->> [:title :game-over :cloud-1 :cloud-2 :energy :released-energy]
        (concat move/ninja-modes)
        (map #(vector % nil))
-       (concat [[:weapon {:file "five-blades-star" :size 2}]])
+       (concat [[:weapon {:file "five-blades-star" :size 3}]])
        (mapcat (fn [[k v]] (if (map? v)
                             (for [i (range 0 (:size v))]
                               [(keyword (str (name k) "-" i)) (str (:file v) "-" i ".png")])
@@ -174,7 +174,7 @@
 
     (doseq [killer killers]
       (render game camera game-size
-              {:img (get images (keyword (str "weapon-" (quot (:cycle killer) 15))))
+              {:img (get images (keyword (str "weapon-" (quot (:cycle killer) 8))))
                :x   (* (:x killer) tile-size) :y (* (:y killer) tile-size)}))
 
     (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))

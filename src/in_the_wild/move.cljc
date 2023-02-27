@@ -121,7 +121,7 @@
   (let [updated-killers
         (->> killers
              (map #(update % :y + (:velocity-y %)))
-             (map #(update % :cycle (fn [c] (mod (inc c) 30))))
+             (map #(update % :cycle (fn [c] (mod (inc c) 24))))
              (filter #(and (pos? (:y %))
                            (< (:y %) (:map-height tiled-map))))
              (map #(if (and (touch? player-x player-y (:x %) (:y %))
