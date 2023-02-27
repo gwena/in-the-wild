@@ -27,28 +27,34 @@
                   :invert (rand-nth [-1 1])
                   :speed (/ (helper/rand-range 1 5) 10)))))
 
-(defonce *state (atom {:lifecycle           :start
-                       :score               0
-                       :start-time          (helper/now)
-                       :pressed-keys        #{}
-                       :x-velocity          0
-                       :y-velocity          0
-                       :player-x            20
-                       :player-y            0
-                       :player-width        1
-                       :player-height       (/ 257 231) ;; ratio height / width
-                       :can-jump?           false
-                       :started?            false
-                       :direction           :right
-                       :images              {}
-                       :ninja-mode          :ninja-both-booster
-                       :tiled-map           nil
-                       :tiled-map-entity    nil
-                       :camera              (e/->camera true)
-                       :target-color-weight 0
-                       :clouds              (generate-clouds)
-                       :rewards             []
-                       :killers             []}))
+(def starting-state
+  {:lifecycle           :start
+   :score               0
+   :start-time          (helper/now)
+   :pressed-keys        #{}
+   :x-velocity          0
+   :y-velocity          0
+   :player-x            20
+   :player-y            0
+   :player-width        1
+   :player-height       (/ 257 231) ;; ratio height / width
+   :can-jump?           false
+   :started?            false
+   :direction           :right
+   :images              {}
+   :ninja-mode          :ninja-both-booster
+   :tiled-map           nil
+   :tiled-map-entity    nil
+   :camera              (e/->camera true)
+   :target-color-weight 0
+   :clouds              (generate-clouds)
+   :rewards             []
+   :killers             []})
+
+(defonce *state (atom {}))
+
+(defn reset-state! []
+  (reset! *state starting-state))
 
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
@@ -92,7 +98,9 @@
   ;; load the tiled map
   (tiles/load-tiled-map game tiled-map
                         (fn [tiled-map entity]
-                          (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
+                          (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity)))
+
+  (reset-state!))
 
 (def color-blueish [0.68 0.85 0.92 1])
 (def color-dark-blue [0.18 0.25 0.32 1])
