@@ -107,7 +107,7 @@
   {:viewport {:x 0 :y 0 :width 0 :height 0}
    :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
 
-(defn render [game camera {:keys [img gw gh w h x y]}]
+(defn render [game camera [gw gh] {:keys [img w h x y]}]
   ;; TODO could abstract gw, gh, and use keyword for img, see also w h as optional
   (when img
     (c/render game
@@ -136,66 +136,59 @@
                 clouds
                 rewards
                 killers]
-         :as   state} @*state
-        game-width    (utils/get-width game)
-        game-height   (utils/get-height game)
-        offset        (/ game-width 2)
-        tile-size     (/ game-height (:map-height tiled-map))
-        player-x      (* player-x tile-size)
-        player-y      (* player-y tile-size)
-        player-width  (* player-width tile-size)
-        player-height (* player-height tile-size)
-        pos-x         (- player-x offset)
-        camera        (t/translate camera (- player-x offset) 0)]
+         :as   state}            @*state
+        game-size                (utils/get-size game)
+        [game-width game-height] game-size
+        offset                   (/ game-width 2)
+        tile-size                (/ game-height (:map-height tiled-map))
+        player-x                 (* player-x tile-size)
+        player-y                 (* player-y tile-size)
+        player-width             (* player-width tile-size)
+        player-height            (* player-height tile-size)
+        pos-x                    (- player-x offset)
+        camera                   (t/translate camera (- player-x offset) 0)]
 
     ;; render sky
     (c/render game (update (screen-entity target-color-weight) :viewport
                            assoc :width game-width :height game-height))
 
-    (render game camera
+    (render game camera game-size
             {:img tiled-map-entity
-             :gw  game-width  :gh game-height
              :w   (* (/ (:width tiled-map-entity)
                         (:height tiled-map-entity))
                      game-height)
-             :h   game-height :x  0 :y 0})
+             :h   game-height :x 0 :y 0})
 
     (doseq [cloud clouds]
-      (render game camera
+      (render game camera game-size
               (let [{:keys [width height] :as img} (get images (:type cloud))]
                 {:img img
-                 :gw  game-width :gh game-height
                  :w   (* (:size cloud) (:invert cloud) width)
                  :h   (* (:size cloud) height)
-                 :x   (:x cloud) :y  (:y cloud)})))
+                 :x   (:x cloud) :y (:y cloud)})))
 
     (doseq [reward rewards]
-      (render game camera
+      (render game camera game-size
               {:img (get images (:type reward))
-               :gw  game-width                :gh game-height
-               :x   (* (:x reward) tile-size) :y  (* (:y reward) tile-size)}))
+               :x   (* (:x reward) tile-size) :y (* (:y reward) tile-size)}))
 
     (doseq [killer killers]
-      (render game camera
+      (render game camera game-size
               {:img (get images (keyword (str "weapon-" (quot (:cycle killer) 15))))
-               :gw  game-width                :gh game-height
-               :x   (* (:x killer) tile-size) :y  (* (:y killer) tile-size)}))
+               :x   (* (:x killer) tile-size) :y (* (:y killer) tile-size)}))
 
     (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
-      (render game camera
+      (render game camera game-size
               (let [{:keys [width height] :as img} (get images :game-over)]
                 {:img img
-                 :gw  game-width               :gh game-height
-                 :x   (- player-x (/ width 2)) :y  (/ (- game-height height) 2)})))
+                 :x   (- player-x (/ width 2)) :y (/ (- game-height height) 2)})))
 
-    (render game camera
+    (render game camera game-size
             {:img (get images :title)
-             :gw  game-width   :gh game-height
-             :x   (+ pos-x 10) :y  10})
+             :x   (+ pos-x 10) :y 10})
 
-    (render game camera
+    (render game camera game-size
             {:img (get images ninja-mode)
-             :gw  game-width :gh game-height
              :w   (cond-> player-width (= direction :left) (* -1))
              :h   player-height
              :x   (cond-> player-x (= direction :left) (+ player-width))
