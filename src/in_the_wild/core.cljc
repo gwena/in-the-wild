@@ -116,7 +116,6 @@
    :clear    {:color (color-transform color-blueish color-dark-blue target-color-weight) :depth 1}})
 
 (defn render [game camera [gw gh] {:keys [img w h x y]}]
-  ;; TODO could abstract gw, gh, and use keyword for img, see also w h as optional
   (when img
     (c/render game
               (-> img
