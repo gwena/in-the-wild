@@ -51,11 +51,14 @@
                                         (mousecode->keyword button))))
 
 (def keycode-keyword-map
+  ;; See issue with keycodes and localization, or different layouts, e.g. Colemak
+  ;; https://github.com/glfw/glfw/issues/1502
+  ;; Rather use common keys if possible
   {GLFW/GLFW_KEY_LEFT  :left
    GLFW/GLFW_KEY_RIGHT :right
    GLFW/GLFW_KEY_UP    :up
    GLFW/GLFW_KEY_SPACE :space
-   GLFW/GLFW_KEY_R     :r})
+   GLFW/GLFW_KEY_Q     :q})
 
 (defn keycode->keyword [keycode]
   (get keycode-keyword-map keycode))

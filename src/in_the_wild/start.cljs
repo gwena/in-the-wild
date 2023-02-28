@@ -28,11 +28,12 @@
                                   y      (- (.-clientY event) (.-top bounds))]
                               (assoc state :mouse-x x :mouse-y y)))))))
 (def keycode-keyword-map
+  ;; Always align with the similar map in start.clj
   {37 :left
    39 :right
    38 :up
    32 :space
-   82 :r})
+   81 :q})
 
 (defn keycode->keyword [keycode]
   (get keycode-keyword-map keycode))

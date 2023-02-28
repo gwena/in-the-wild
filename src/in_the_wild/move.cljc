@@ -19,7 +19,7 @@
 
 (defn check-restart
   [{:keys [pressed-keys restart?] :as state}]
-  (let [still-restarting? (contains? pressed-keys :r)]
+  (let [still-restarting? (contains? pressed-keys :q)]
     (cond
       still-restarting? (assoc state :restart? true)
       restart?          (assoc state
