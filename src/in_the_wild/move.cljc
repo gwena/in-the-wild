@@ -17,6 +17,16 @@
       0
       velocity)))
 
+(defn check-restart
+  [{:keys [pressed-keys restart?] :as state}]
+  (let [still-restarting? (contains? pressed-keys :r)]
+    (cond
+      still-restarting? (assoc state :restart? true)
+      restart?          (assoc state
+                               :restart? false
+                               :lifecycle :restart)
+      :else             state)))
+
 (defn check-pause
   [{:keys [pressed-keys pause?] :as state}]
   (let [space? (contains? pressed-keys :space)]
@@ -183,4 +193,5 @@
              (drop-killers)
              (animate game)
              (check-die)
-             (game-over))))))
+             (game-over)
+             (check-restart))))))

@@ -74,6 +74,8 @@
   (gl game enable (gl game BLEND))
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
+  (reset-state!)
+
   ;; load font
   (#?(:clj load-font-clj :cljs load-font-cljs)
    :blox-brk
@@ -98,9 +100,7 @@
   ;; load the tiled map
   (tiles/load-tiled-map game tiled-map
                         (fn [tiled-map entity]
-                          (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity)))
-
-  (reset-state!))
+                          (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
 
 (def color-blueish [0.68 0.85 0.92 1])
 (def color-dark-blue [0.18 0.25 0.32 1])
@@ -213,4 +213,8 @@
                            (t/translate 30 80))))))
 
   (swap! *state (move/move-all game))
+
+  (when (= (:lifecycle @*state) :restart)
+    (init game))
+
   game)

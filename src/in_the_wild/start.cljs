@@ -31,7 +31,8 @@
   {37 :left
    39 :right
    38 :up
-   32 :space})
+   32 :space
+   82 :r})
 
 (defn keycode->keyword [keycode]
   (get keycode-keyword-map keycode))
