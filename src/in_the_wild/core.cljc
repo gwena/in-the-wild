@@ -71,12 +71,19 @@
                             [[k (or v (str (name k) ".png"))]])))
        (into {})))
 
+(defn new-game [game]
+  (reset-state!)
+
+  ;; Load Tiled Map and Tileset
+  (tiles/load-tiled-map game tiled-map
+                        (fn [tiled-map entity]
+                          (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
+
 (defn init [game]
   ;; Allow transparency in images
   (gl game enable (gl game BLEND))
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
-  (reset-state!)
 
   ;; Load Font
   (#?(:clj load-font-clj :cljs load-font-cljs)
@@ -100,10 +107,7 @@
                              entity (assoc entity :width width :height height)]
                          (swap! *assets update :images assoc k entity)))))
 
-  ;; Load Tiled Map and Tileset
-  (tiles/load-tiled-map game tiled-map
-                        (fn [tiled-map entity]
-                          (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
+  (new-game game))
 
 (def color-blueish [0.68 0.85 0.92 1])
 (def color-dark-blue [0.18 0.25 0.32 1])
