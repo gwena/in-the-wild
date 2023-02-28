@@ -32,11 +32,11 @@
         image                                   (first (filter #(= :image (:tag %)) (:content tileset)))
         {{:keys [tilewidth tileheight]} :attrs} tileset
         layers                                  (->> parsed :content
-                    (filter #(= :layer (:tag %)))
-                    (map #(vector
-                           (-> % :attrs :name)
-                           (-> % :content first :content first)))
-                    (into {}))]
+                                                     (filter #(= :layer (:tag %)))
+                                                     (map #(vector
+                                                            (-> % :attrs :name)
+                                                            (-> % :content first :content first)))
+                                                     (into {}))]
     (utils/get-image (-> image :attrs :source)
                      (fn [{:keys [data width height]}]
                        (let [tile-size          (/ height map-height)
@@ -50,11 +50,11 @@
                              images             (vec
                                                  (for [y (range tiles-vert)
                                                        x (range tiles-horiz)]
-                                       (t/crop inner-entity
-                                               (* x tilewidth)
-                                               (* y tileheight)
-                                               tilewidth
-                                               tileheight)))
+                                                   (t/crop inner-entity
+                                                           (* x tilewidth)
+                                                           (* y tileheight)
+                                                           tilewidth
+                                                           tileheight)))
                              partitioned-layers (reduce-kv
                                                  (fn [m k v]
                                                    (assoc m k (->> v
@@ -73,11 +73,11 @@
                                              :height entity-height
                                              :render-to-texture
                                              {'u_image
-                                              (vec (for [layer ["background" "walls"]
+                                              (vec (for [layer ["background" "walls" "bonus"]
                                                          i     (range (count (get layers layer)))
                                                          :let  [x (mod i map-width)
-                                                               y (int (/ i map-width))
-                                                               id (dec (nth (get layers layer) i))]
+                                                                y (int (/ i map-width))
+                                                                id (dec (nth (get layers layer) i))]
                                                          :when (>= id 0)]
                                                      (let [image (nth images id)]
                                                        (transform-tile image x y entity-width entity-height tile-size))))}))
