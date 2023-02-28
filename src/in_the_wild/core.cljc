@@ -27,7 +27,7 @@
                   :invert (rand-nth [-1 1])
                   :speed (/ (helper/rand-range 1 5) 10)))))
 
-(def starting-state
+(defn starting-state []
   {:lifecycle           :start
    :score               0
    :start-time          (helper/now)
@@ -56,7 +56,7 @@
 (defonce *state (atom {}))
 
 (defn reset-state! []
-  (reset! *state starting-state))
+  (reset! *state (starting-state)))
 
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
