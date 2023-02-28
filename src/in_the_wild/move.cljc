@@ -2,12 +2,12 @@
   (:require [in-the-wild.helper :as helper]
             [in-the-wild.tiles :as tiles]))
 
-(def ^:const damping 0.1)
-(def ^:const max-velocity 14)
-(def ^:const max-jump-velocity (* max-velocity 6))
-(def ^:const deceleration 0.8)
-(def ^:const gravity 2.5)
-(def ^:const animation-secs 0.2)
+(def damping 0.1)
+(def max-velocity 14)
+(def max-jump-velocity (* max-velocity 6))
+(def deceleration 0.8)
+(def gravity 2.5)
+(def animation-secs 0.2)
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
 
