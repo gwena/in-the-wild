@@ -7,6 +7,7 @@
 (def max-jump-velocity (* max-velocity 6))
 (def deceleration 0.8)
 (def gravity 2.5)
+(def pre-start-gravity 1.5) ;; for Ninja to float down at the start
 (def animation-secs 0.2)
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
@@ -67,12 +68,10 @@
         (> player-y (+ 2 (:map-height tiled-map))) (assoc state :lifecycle :game-over)
         :else
         (let [x-velocity (get-x-velocity state)
-              y-velocity (+ (get-y-velocity state) (if started?
-                                                     gravity
-                                                     ;; initially make the gravity lower for Ninja floats down
-                                                     1.5))
               x-change   (* x-velocity delta-time)
               y-change   (* y-velocity delta-time)]
+              y-velocity (+ (get-y-velocity state)
+                            (if started? gravity pre-start-gravity))
           (if (or (not= 0 x-change) (not= 0 y-change))
             (assoc state
                    :x-velocity (decelerate x-velocity)
