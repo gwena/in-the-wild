@@ -54,7 +54,6 @@
   {GLFW/GLFW_KEY_LEFT  :left
    GLFW/GLFW_KEY_RIGHT :right
    GLFW/GLFW_KEY_UP    :up
-   GLFW/GLFW_KEY_DOWN  :down
    GLFW/GLFW_KEY_SPACE :space})
 
 (defn keycode->keyword [keycode]
