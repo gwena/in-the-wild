@@ -51,6 +51,8 @@
    :rewards             []
    :killers             []})
 
+(defonce *assets (atom {}))
+
 (defonce *state (atom {}))
 
 (defn reset-state! []
@@ -70,22 +72,23 @@
        (into {})))
 
 (defn init [game]
-  ;; allow transparency in images
+  ;; Allow transparency in images
   (gl game enable (gl game BLEND))
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
   (reset-state!)
 
-  ;; load font
+  ;; Load Font
   (#?(:clj load-font-clj :cljs load-font-cljs)
    :blox-brk
    (fn [{:keys [data]} baked-font]
      (let [font-entity    (text/->font-entity game data baked-font)
            dynamic-entity (c/compile game (i/->instanced-entity font-entity))]
-       (swap! *state assoc
+       (swap! *assets assoc
               :font-entity font-entity
               :dynamic-entity dynamic-entity))))
 
+  ;; Load Images
   (doseq [[k filename] image-keys->filenames]
     (utils/get-image (str "img/" filename)
                      (fn [{:keys [data width height]}]
@@ -95,9 +98,9 @@
                              entity (c/compile game entity)
                              ;; assoc the width and height to we can reference it later
                              entity (assoc entity :width width :height height)]
-                         (swap! *state update :images assoc k entity)))))
+                         (swap! *assets update :images assoc k entity)))))
 
-  ;; load the tiled map
+  ;; Load Tiled Map and Tileset
   (tiles/load-tiled-map game tiled-map
                         (fn [tiled-map entity]
                           (swap! *state assoc :tiled-map tiled-map :tiled-map-entity entity))))
@@ -125,8 +128,8 @@
                   (t/scale (or w (:width img)) (or h (:height img)))))))
 
 (defn tick [game]
-  (let [{:keys [font-entity
-                dynamic-entity
+  (let [{:keys [tiled-map
+                tiled-map-entity
                 lifecycle
                 end-time
                 player-x
@@ -134,16 +137,19 @@
                 player-width
                 player-height
                 direction
-                images
                 ninja-mode
-                tiled-map
-                tiled-map-entity
                 camera
                 target-color-weight
                 clouds
                 rewards
                 killers]
-         :as   state}            @*state
+         :as   state} @*state
+
+        {:keys [font-entity
+                dynamic-entity
+                images
+                ]} @*assets
+
         game-size                (utils/get-size game)
         [game-width game-height] game-size
         offset                   (/ game-width 2)
