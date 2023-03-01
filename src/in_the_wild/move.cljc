@@ -157,20 +157,15 @@
 (defn animate
   [{:keys [total-time]}
    {:keys [lifecycle x-velocity y-velocity target-color-weight clouds] :as state}]
-  (let [direction (get-direction state)]
-    (-> state
-        (assoc :ninja-mode
-               (cond
-                 (not= y-velocity 0)
-                 :ninja-both-booster
-                 (not= x-velocity 0)
-                 (let [cycle-time (mod total-time (* animation-secs (count ninja-modes)))]
-                   (nth ninja-modes (int (/ cycle-time animation-secs))))
-                 :else
-                 :ninja-no-booster))
-        (assoc :direction direction)
-        (assoc :target-color-weight (if (= lifecycle :game-over) (min 1.0 (+ target-color-weight 0.01)) target-color-weight))
-        (assoc :clouds (map #(update % :x + (:speed %)) clouds)))))
+  (assoc state
+         :ninja-mode (cond
+                       (not= y-velocity 0) :ninja-both-booster
+                       (not= x-velocity 0) (let [cycle-time (mod total-time (* animation-secs (count ninja-modes)))]
+                                             (nth ninja-modes (int (/ cycle-time animation-secs))))
+                       :else               :ninja-no-booster)
+         :direction (get-direction state)
+         :target-color-weight (if (= lifecycle :game-over) (min 1.0 (+ target-color-weight 0.01)) target-color-weight)
+         :clouds (map #(update % :x + (:speed %)) clouds)))
 
 (defn check-die
   [{:keys [lifecycle killers] :as state}]
