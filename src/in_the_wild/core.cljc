@@ -37,7 +37,7 @@
    :player-x            20
    :player-y            0
    :player-width        1
-   :player-height       (/ 257 231) ;; ratio height / width
+   :player-height       1 ;; same ratio for now (/ 257 231) ;; ratio height / width
    :can-jump?           false
    :started?            false
    :direction           :right
