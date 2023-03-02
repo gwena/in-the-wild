@@ -101,6 +101,21 @@
              {:y-velocity 0         :y-change 0 :player-y old-y
               :can-jump?  (not up?) :started? true}))))
 
+(def bonus
+  {312 {:name :choco-square :points 5000}
+   364 {:name :gold-star :points 20000}})
+
+(defn grab-bonus
+  [{:keys [player-x player-y] :as state}]
+  (let [y (inc (int player-y))
+        x (int player-x)
+        c (dec (get-in state [:tiled-map :layers "bonus" y x]))]
+    (if (and c (not (zero? c)))
+      (-> state
+          (assoc-in [:tiled-map :layers "bonus" y x] nil)
+          (update :score + (get-in bonus [c :points] 0)))
+      state)))
+
 (defn drop-rewards
   [{:keys [lifecycle rewards tiled-map player-x player-y] :as state}]
   (let [px              (int player-x)
@@ -192,6 +207,7 @@
              (drop-rewards)
              (drop-killers)
              (animate game)
+             (grab-bonus)
              (check-die)
              (game-over)
              (check-restart))))))
