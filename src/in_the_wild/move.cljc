@@ -106,10 +106,12 @@
    364 {:name :gold-star :points 20000}})
 
 (defn grab-bonus
-  [{:keys [player-x player-y] :as state}]
+  [{:keys [player-x player-y tiled-map] :as state}]
   (let [y (inc (int player-y))
         x (int player-x)
-        c (dec (get-in state [:tiled-map :layers "bonus" y x]))]
+        c (when (and (pos? x) (< x (:map-width tiled-map))
+                     (pos? y) (< x (:map-height tiled-map)))
+            (dec (get-in state [:tiled-map :layers "bonus" y x])))]
     (if (and c (not (zero? c)))
       (-> state
           (assoc-in [:tiled-map :layers "bonus" y x] nil)
