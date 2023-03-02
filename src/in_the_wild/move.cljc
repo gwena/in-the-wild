@@ -9,8 +9,8 @@
 (def gravity 2.5)
 (def pre-start-gravity 1.5) ;; for Ninja to float down at the start
 (def animation-secs 0.2)
-(def max-movement-per-frame 0.7)
-(def min-movement-per-frame -0.7)
+(def max-movement-per-frame 0.9)
+(def min-movement-per-frame -0.9)
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
 
