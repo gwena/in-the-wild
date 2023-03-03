@@ -171,10 +171,9 @@
 
     (render game camera game-size
             {:img tiled-map-entity
-             :w   (* (/ (:width tiled-map-entity)
-                        (:height tiled-map-entity))
-                     game-height)
-             :h   game-height :x 0 :y 0})
+             :w   tile-size
+             :h   tile-size
+             :x   0 :y 0})
 
     (doseq [cloud clouds]
       (render game camera game-size

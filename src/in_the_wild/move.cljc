@@ -1,6 +1,7 @@
 (ns in-the-wild.move
   (:require [in-the-wild.helper :as helper]
-            [in-the-wild.tiles :as tiles]))
+            [in-the-wild.tiles :as tiles]
+            [play-cljc.instances :as i]))
 
 (def damping 0.1)
 (def max-velocity 14)
@@ -95,27 +96,27 @@
         old-y (- player-y y-change)
         up?   (neg? y-change)]
     (merge state
-           (when (tiles/touching-tile? tiled-map "walls" player-x old-y player-width player-height)
+           (when (tiles/touching-tile tiled-map "walls" player-x old-y player-width player-height)
              {:x-velocity 0 :x-change 0 :player-x old-x})
-           (when (tiles/touching-tile? tiled-map "walls" old-x player-y player-width player-height)
+           (when (tiles/touching-tile tiled-map "walls" old-x player-y player-width player-height)
              {:y-velocity 0         :y-change 0 :player-y old-y
               :can-jump?  (not up?) :started? true}))))
 
-(def bonus
-  {312 {:name :choco-square :points 5000}
-   364 {:name :gold-star :points 20000}})
+#_(def bonus
+    {312 {:name :choco-square :points 5000}
+     364 {:name :gold-star :points 20000}})
 
 (defn grab-bonus
   [{:keys [player-x player-y tiled-map] :as state}]
-  (let [y (inc (int player-y))
-        x (int player-x)
-        c (when (and (pos? x) (< x (:map-width tiled-map))
-                     (pos? y) (< x (:map-height tiled-map)))
-            (dec (get-in state [:tiled-map :layers "bonus" y x])))]
-    (if (and c (not (zero? c)))
+  (let [y    (inc (int player-y))
+        x    (int player-x)
+        tile (when (and (pos? x) (< x (:map-width tiled-map))
+                        (pos? y) (< x (:map-height tiled-map)))
+               (get-in state [:tiled-map :layers "bonus" x y]))]
+    (if tile
       (-> state
-          (assoc-in [:tiled-map :layers "bonus" y x] nil)
-          (update :score + (get-in bonus [c :points] 0)))
+          (assoc-in [:tiled-map :layers "bonus" x y] nil)
+          #_(update :score + (get-in bonus [c :points] 0)))
       state)))
 
 (defn drop-rewards
