@@ -107,16 +107,18 @@
      364 {:name :gold-star :points 20000}})
 
 (defn grab-bonus
-  [{:keys [player-x player-y tiled-map] :as state}]
+  [{:keys [player-x player-y tiled-map tiled-map-entity] :as state}]
   (let [y    (inc (int player-y))
         x    (int player-x)
         tile (when (and (pos? x) (< x (:map-width tiled-map))
                         (pos? y) (< x (:map-height tiled-map)))
                (get-in state [:tiled-map :layers "bonus" x y]))]
     (if tile
-      (-> state
-          (assoc-in [:tiled-map :layers "bonus" x y] nil)
-          #_(update :score + (get-in bonus [c :points] 0)))
+      (let [tile-id (.indexOf (:tiles tiled-map) tile)]
+        (-> state
+            (assoc-in [:tiled-map :layers "bonus" x y] nil)
+            (assoc :tiled-map-entity (i/dissoc tiled-map-entity tile-id))
+            #_(update :score + (get-in bonus [c :points] 0))))
       state)))
 
 (defn drop-rewards
