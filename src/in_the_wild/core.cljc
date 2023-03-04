@@ -84,7 +84,6 @@
   (gl game enable (gl game BLEND))
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
-
   ;; Load Font
   (#?(:clj load-font-clj :cljs load-font-cljs)
    :blox-brk

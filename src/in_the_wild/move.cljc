@@ -102,9 +102,9 @@
              {:y-velocity 0         :y-change 0 :player-y old-y
               :can-jump?  (not up?) :started? true}))))
 
-#_(def bonus
-    {312 {:name :choco-square :points 5000}
-     364 {:name :gold-star :points 20000}})
+(def image-id->bonus
+  {312 {:name :choco-square :points 5000}
+   364 {:name :gold-star :points 20000}})
 
 (defn grab-bonus
   [{:keys [player-x player-y tiled-map tiled-map-entity] :as state}]
@@ -114,11 +114,12 @@
                         (pos? y) (< x (:map-height tiled-map)))
                (get-in state [:tiled-map :layers "bonus" x y]))]
     (if tile
-      (let [tile-id (.indexOf (:tiles tiled-map) tile)]
+      (let [tile-id  (.indexOf (:tiles tiled-map) tile)
+            image-id (:image-id tile)]
         (-> state
             (assoc-in [:tiled-map :layers "bonus" x y] nil)
             (assoc :tiled-map-entity (i/dissoc tiled-map-entity tile-id))
-            #_(update :score + (get-in bonus [c :points] 0))))
+            (update :score + (get-in image-id->bonus [image-id :points] 0))))
       state)))
 
 (defn drop-rewards
