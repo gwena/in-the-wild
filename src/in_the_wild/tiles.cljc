@@ -1,7 +1,6 @@
 (ns in-the-wild.tiles
   (:require [in-the-wild.utils :as utils]
             [play-cljc.transforms :as t]
-            [play-cljc.math :as m]
             [play-cljc.instances :as i]
             [play-cljc.gl.core :as c]
             [play-cljc.gl.entities-2d :as e]
@@ -51,7 +50,7 @@
                                            y        (int (/ i map-width))
                                            image-id (dec (nth layer i))
                                            tile-map (when (>= image-id 0)
-                                                      {:layer layer-name :tile-x x :tile-y y})]
+                                                      {:layer layer-name :tile-x x :tile-y y :image-id image-id})]
                                        (cond-> m
                                          true
                                          (assoc-in [:layers layer-name x y] tile-map)
