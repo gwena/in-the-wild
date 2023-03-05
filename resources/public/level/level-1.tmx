@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="280" height="20" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="1">
- <tileset version="1.9" tiledversion="1.9.2" name="Original-with-64x64" tilewidth="64" tileheight="64" tilecount="988" columns="52">
+ <tileset firstgid="1" name="Wild" tilewidth="64" tileheight="64" tilecount="988" columns="52">
  <image source="level/in-the-wild-tileset.png" width="3328" height="1216"/>
 </tileset>
  <layer id="1" name="background" width="280" height="20" opacity="0.9">
