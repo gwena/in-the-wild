@@ -61,7 +61,7 @@
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
 (def image-keys->filenames
-  (->> [:title :game-over :cloud-1 :cloud-2 :energy :released-energy]
+  (->> [:title :keys :game-over :cloud-1 :cloud-2 :energy :released-energy]
        (concat move/ninja-modes)
        (map #(vector % nil))
        (concat [[:weapon {:file "five-blades-star" :size 3}]])
@@ -174,6 +174,15 @@
              :h   tile-size
              :x   0 :y 0})
 
+    (render game camera game-size
+            {:img (get images :title)
+             :x   (+ pos-x 10) :y 10})
+
+
+    (render game camera game-size
+            {:img (get images :keys)
+             :x   (+ pos-x 10) :y 60})
+
     (doseq [cloud clouds]
       (render game camera game-size
               (let [{:keys [width height] :as img} (get images (:type cloud))]
@@ -199,10 +208,6 @@
                  :x   (- player-x (/ width 2)) :y (/ (- game-height height) 2)})))
 
     (render game camera game-size
-            {:img (get images :title)
-             :x   (+ pos-x 10) :y 10})
-
-    (render game camera game-size
             {:img (get images ninja-mode)
              :w   (cond-> player-width (= direction :left) (* -1))
              :h   player-height
@@ -218,7 +223,7 @@
                             (for [char-num (range (count score))]
                               [0 char-num (chars/crop-char font-entity (get score char-num))]))
                            (t/project game-width game-height)
-                           (t/translate 30 80))))))
+                           (t/translate 30 100))))))
 
   (swap! *state (move/move-all game))
 
