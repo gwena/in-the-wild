@@ -114,8 +114,8 @@
 (defn color-transform [from to to-weight]
   (let [from-weight (- 1.0 to-weight)
         components  (map vector from to)]
-    (into [] (map #(+ (* (first %) from-weight) (* (last %) to-weight))
-                  components))))
+    (vec (map #(+ (* (first %) from-weight) (* (last %) to-weight))
+              components))))
 
 (defn screen-entity [target-color-weight]
   {:viewport {:x 0 :y 0 :width 0 :height 0}
