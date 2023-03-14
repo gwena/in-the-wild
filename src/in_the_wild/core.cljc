@@ -130,6 +130,12 @@
                   (t/translate x y)
                   (t/scale (or w (:width img)) (or h (:height img)))))))
 
+(defn text->img [{:keys [font-entity dynamic-entity]} s]
+  (reduce (partial apply chars/assoc-char)
+          dynamic-entity
+          (for [char-num (range (count s))]
+            [0 char-num (chars/crop-char font-entity (get s char-num))])))
+
 (defn tick [game]
   (let [{:keys [tiled-map
                 tiled-map-entity
@@ -148,10 +154,7 @@
                 killers]
          :as   state} @*state
 
-        {:keys [font-entity
-                dynamic-entity
-                images
-                ]} @*assets
+        {:keys [dynamic-entity images]} @*assets
 
         game-size                (utils/get-size game)
         [game-width game-height] game-size
@@ -217,11 +220,7 @@
     ;; render score
     (when dynamic-entity
       (let [score (str (:score state))]
-        (c/render game (-> (reduce
-                            (partial apply chars/assoc-char)
-                            dynamic-entity
-                            (for [char-num (range (count score))]
-                              [0 char-num (chars/crop-char font-entity (get score char-num))]))
+        (c/render game (-> (text->img @*assets score )
                            (t/project game-width game-height)
                            (t/translate 30 100))))))
 
