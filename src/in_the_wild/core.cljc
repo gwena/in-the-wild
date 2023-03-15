@@ -181,11 +181,6 @@
             {:img (get images :title)
              :x   (+ pos-x 10) :y 10})
 
-
-    (render game camera game-size
-            {:img (get images :keys)
-             :x   (+ pos-x 10) :y 60})
-
     (doseq [cloud clouds]
       (render game camera game-size
               (let [{:keys [width height] :as img} (get images (:type cloud))]
@@ -204,6 +199,22 @@
               {:img (get images (keyword (str "weapon-" (quot (:cycle killer) 8))))
                :x   (* (:x killer) tile-size) :y (* (:y killer) tile-size)}))
 
+    ;; render the ninja
+    (render game camera game-size
+            {:img (get images ninja-mode)
+             :w   (cond-> player-width (= direction :left) (* -1))
+             :h   player-height
+             :x   (cond-> player-x (= direction :left) (+ player-width))
+             :y   player-y})
+
+    ;; render the score
+    (when dynamic-entity
+      (let [score (str (:score state))]
+        (c/render game (-> (text->img @*assets score )
+                           (t/project game-width game-height)
+                           (t/translate 10 60)))))
+
+    ;; If game-over, render the keys to play, and initially game-over, then the full size ninja
     (when (= lifecycle :game-over)
       (if (< (- (helper/now) end-time) 5000)
         (render game camera game-size
@@ -213,21 +224,12 @@
         (render game camera game-size
                 (let [{:keys [width height] :as img} (get images :ninja-title)]
                   {:img img
-                   :x   (- player-x (/ width 2)) :y (/ (- game-height height) 2)}))))
-
-    (render game camera game-size
-            {:img (get images ninja-mode)
-             :w   (cond-> player-width (= direction :left) (* -1))
-             :h   player-height
-             :x   (cond-> player-x (= direction :left) (+ player-width))
-             :y   player-y})
-
-    ;; render score
-    (when dynamic-entity
-      (let [score (str (:score state))]
-        (c/render game (-> (text->img @*assets score )
-                           (t/project game-width game-height)
-                           (t/translate 30 100))))))
+                   :x   (- player-x (/ width 2)) :y (/ (- game-height height) 2)})))
+      (render game camera game-size
+              (let [{:keys [width height] :as img} (get images :keys)]
+                {:img img
+                 :x   (- player-x (/ width 2)) :y (- game-height height 50)})))
+    )
 
   (swap! *state (move/move-all game))
 
