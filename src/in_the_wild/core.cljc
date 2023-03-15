@@ -61,7 +61,7 @@
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
 (def image-keys->filenames
-  (->> [:title :keys :game-over :cloud-1 :cloud-2 :energy :released-energy]
+  (->> [:title :ninja-title :keys :game-over :cloud-1 :cloud-2 :energy :released-energy]
        (concat move/ninja-modes)
        (map #(vector % nil))
        (concat [[:weapon {:file "five-blades-star" :size 3}]])
@@ -204,11 +204,16 @@
               {:img (get images (keyword (str "weapon-" (quot (:cycle killer) 8))))
                :x   (* (:x killer) tile-size) :y (* (:y killer) tile-size)}))
 
-    (when (and (= lifecycle :game-over) (< (- (helper/now) end-time) 5000))
-      (render game camera game-size
-              (let [{:keys [width height] :as img} (get images :game-over)]
-                {:img img
-                 :x   (- player-x (/ width 2)) :y (/ (- game-height height) 2)})))
+    (when (= lifecycle :game-over)
+      (if (< (- (helper/now) end-time) 5000)
+        (render game camera game-size
+                (let [{:keys [width height] :as img} (get images :game-over)]
+                  {:img img
+                   :x   (- player-x (/ width 2)) :y (/ (- game-height height) 2)}))
+        (render game camera game-size
+                (let [{:keys [width height] :as img} (get images :ninja-title)]
+                  {:img img
+                   :x   (- player-x (/ width 2)) :y (/ (- game-height height) 2)}))))
 
     (render game camera game-size
             {:img (get images ninja-mode)
