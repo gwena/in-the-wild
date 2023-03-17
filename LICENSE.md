@@ -22,7 +22,3 @@ Graphics by:
 ## Font
 
 Blox Brk Font by Brian Kent - Freeware 
-
-## Music
-
-Public domain (see https://github.com/oakes/edna#licensing)

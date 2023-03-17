@@ -1,10 +1,7 @@
 (ns in-the-wild.start
   (:require [in-the-wild.core :as c]
             [play-cljc.gl.core :as pc]
-            [goog.events :as events])
-  ;; music disabled for now
-  #_
-  (:require-macros [in-the-wild.music :refer [build-for-cljs]]))
+            [goog.events :as events]))
 
 (defn msec->sec [n]
   (* 0.001 n))
@@ -62,8 +59,8 @@
 ;; start the game
 
 (defonce context
-  (let [canvas (js/document.querySelector "canvas")
-        context (.getContext canvas "webgl2")
+  (let [canvas       (js/document.querySelector "canvas")
+        context      (.getContext canvas "webgl2")
         initial-game (assoc (pc/->game context)
                             :delta-time 0
                             :total-time (msec->sec (js/performance.now)))]
@@ -74,20 +71,3 @@
     (listen-for-resize context)
     (game-loop initial-game)
     context))
-
-;; build music, put it in the audio tag, and make the button toggle it on and off
-
-(defonce play-music? (atom false))
-
-(defonce audio (js/document.querySelector "#audio"))
-;; music disabled for now
-;(set! (.-src audio) (build-for-cljs))
-(when @play-music? (.play audio))
-
-(defonce button (js/document.querySelector "#audio-button"))
-(set! (.-onclick button)
-      (fn [e]
-        (if (swap! play-music? not)
-          (.play audio)
-          (.pause audio))))
-

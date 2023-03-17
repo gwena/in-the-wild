@@ -65,6 +65,6 @@ In April 2019 at the Dutch Clojure Days in Amsterdam, I attended the interesting
 
 The title, _in the wild_, is a reference to the sections of the same name in the enjoyable book from Russ Olsen _Getting Clojure_.
 
-## Graphics, Music, Font
+## Graphics, Font
 
 See [License](./LICENSE.md)

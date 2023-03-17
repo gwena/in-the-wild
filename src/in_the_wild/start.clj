@@ -1,27 +1,17 @@
 (ns in-the-wild.start
   (:require [in-the-wild.core :as c]
-            ;; music disabled for now
-                                        ;[in-the-wild.music :as m]
             [play-cljc.gl.core :as pc])
   (:import  [org.lwjgl.glfw GLFW Callbacks
              GLFWCursorPosCallbackI GLFWKeyCallbackI GLFWMouseButtonCallbackI
              GLFWCharCallbackI GLFWFramebufferSizeCallbackI GLFWWindowCloseCallbackI
              GLFWScrollCallbackI]
             [org.lwjgl.opengl GL GL33]
-            [org.lwjgl.system MemoryUtil]
-            [javax.sound.sampled AudioSystem Clip])
+            [org.lwjgl.system MemoryUtil])
   (:gen-class))
-
-(defn play-music! []
-  #_ ;; music is disabled for now
-  (doto (AudioSystem/getClip)
-    (.open (AudioSystem/getAudioInputStream (m/build-for-clj)))
-    (.loop Clip/LOOP_CONTINUOUSLY)
-    (.start)))
 
 (defn mousecode->keyword [mousecode]
   (condp = mousecode
-    GLFW/GLFW_MOUSE_BUTTON_LEFT :left
+    GLFW/GLFW_MOUSE_BUTTON_LEFT  :left
     GLFW/GLFW_MOUSE_BUTTON_RIGHT :right
     nil))
 
@@ -154,14 +144,13 @@
 
 (defn start [game window]
   (let [handle (:handle window)
-        game (assoc game :delta-time 0 :total-time (GLFW/glfwGetTime))]
+        game   (assoc game :delta-time 0 :total-time (GLFW/glfwGetTime))]
     (GLFW/glfwShowWindow handle)
     (c/init game)
     (listen-for-events window)
-    (play-music!)
     (loop [game game]
       (when-not (GLFW/glfwWindowShouldClose handle)
-        (let [ts (GLFW/glfwGetTime)
+        (let [ts   (GLFW/glfwGetTime)
               game (assoc game
                           :delta-time (- ts (:total-time game))
                           :total-time ts)
