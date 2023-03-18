@@ -153,9 +153,9 @@
                       updated-rewards))))
 (defn new-killer? [state]
   (let [time (duration state)]
-    (cond (< time 30)  false
-          (< time 300) (= (rand-int 10) 1)
-          :else        (= (rand-int 5) 1))))
+    (cond (< time 12)  false
+          (< time 180) (= (rand-int 15) 1)
+          :else        (= (rand-int 8) 1))))
 
 (defn drop-killers
   [{:keys [killers tiled-map player-x player-y] :as state}]
