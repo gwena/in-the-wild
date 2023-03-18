@@ -15,6 +15,9 @@
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
 
+(defn duration [state]
+  (quot (- (helper/now) (:start-time state)) 1000))
+
 (defn decelerate [velocity]
   (let [velocity (* velocity deceleration)]
     (if (< (abs velocity) damping)
@@ -122,6 +125,9 @@
             (update :score + (get-in image-id->bonus [image-id :points] 0))))
       state)))
 
+(defn new-reward? []
+  (> (rand 100) 82))
+
 (defn drop-rewards
   [{:keys [lifecycle rewards tiled-map player-x player-y] :as state}]
   (let [px              (int player-x)
@@ -139,15 +145,12 @@
         updated-rewards (map #(dissoc % :points) score-rewards)]
     (assoc state
            :score (+ (:score state) points)
-           :rewards (if (> (rand 100) 82)
+           :rewards (if (new-reward?)
                       (conj updated-rewards {:type       :energy
                                              :x          (helper/rand-span player-x 15)
                                              :y          0
                                              :velocity-y (/ (helper/rand-range 1 4) 10)})
                       updated-rewards))))
-(defn duration [state]
-  (quot (- (helper/now) (:start-time state)) 1000))
-
 (defn new-killer? [state]
   (let [time (duration state)]
     (cond (< time 30)  false
