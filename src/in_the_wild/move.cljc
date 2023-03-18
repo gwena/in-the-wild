@@ -125,8 +125,8 @@
             (update :score + (get-in image-id->bonus [image-id :points] 0))))
       state)))
 
-(defn new-reward? []
-  (> (rand 100) 82))
+(defn new-reward? [state]
+  (and (> (duration state) 2) (> (rand 100) 82)))
 
 (defn drop-rewards
   [{:keys [lifecycle rewards tiled-map player-x player-y] :as state}]
@@ -145,7 +145,7 @@
         updated-rewards (map #(dissoc % :points) score-rewards)]
     (assoc state
            :score (+ (:score state) points)
-           :rewards (if (new-reward?)
+           :rewards (if (new-reward? state)
                       (conj updated-rewards {:type       :energy
                                              :x          (helper/rand-span player-x 15)
                                              :y          0
