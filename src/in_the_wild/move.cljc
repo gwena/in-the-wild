@@ -126,7 +126,7 @@
       state)))
 
 (defn new-reward? [state]
-  (and (> (duration state) 2) (> (rand 100) 82)))
+  (and (> (duration state) 2) (> (rand 1000) 960)))
 
 (defn drop-rewards
   [{:keys [lifecycle rewards tiled-map player-x player-y] :as state}]
