@@ -145,9 +145,11 @@
                                              :y          0
                                              :velocity-y (/ (helper/rand-range 1 4) 10)})
                       updated-rewards))))
+(defn duration [state]
+  (quot (- (helper/now) (:start-time state)) 1000))
 
 (defn new-killer? [state]
-  (let [time (quot (- (helper/now) (:start-time state)) 1000)]
+  (let [time (duration state)]
     (cond (< time 30)  false
           (< time 300) (= (rand-int 10) 1)
           :else        (= (rand-int 5) 1))))
