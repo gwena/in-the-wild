@@ -152,10 +152,15 @@
                                              :velocity-y (/ (helper/rand-range 1 4) 10)})
                       updated-rewards))))
 (defn new-killer? [state]
-  (let [time (duration state)]
-    (cond (< time 12)  false
-          (< time 180) (= (rand-int 15) 1)
-          :else        (= (rand-int 8) 1))))
+  (let [time                 (duration state)
+        no-killer-sec        5
+        sec-to-increase-prob 10
+        start-range          20
+        max-range            8]
+    (when (> time no-killer-sec)
+      (let [extra-time (- time no-killer-sec)
+            rg-prob    (max max-range (- start-range (quot extra-time sec-to-increase-prob)))]
+        (= (rand-int rg-prob) 1)))))
 
 (defn drop-killers
   [{:keys [killers tiled-map player-x player-y] :as state}]
