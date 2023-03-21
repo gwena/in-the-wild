@@ -114,7 +114,7 @@
   (let [y    (inc (int player-y))
         x    (int player-x)
         tile (when (and (pos? x) (< x (:map-width tiled-map))
-                        (pos? y) (< x (:map-height tiled-map)))
+                        (pos? y) (< y (:map-height tiled-map)))
                (get-in state [:tiled-map :layers "bonus" x y]))]
     (if tile
       (let [tile-id  (.indexOf (:tiles tiled-map) tile)
