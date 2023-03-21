@@ -226,9 +226,12 @@
                   {:img img
                    :x   (- player-x (/ width 2)) :y (/ (- game-height height) 2)})))
       (render game camera game-size
-              (let [{:keys [width height] :as img} (get images :keys)]
+              (let [{:keys [width height] :as img} (get images :keys)
+                    ninja-height                   (get-in images [:ninja-title :height])
+                    y                              (min (/ (+ game-height ninja-height 100) 2)
+                                                        (- game-height height 20))]
                 {:img img
-                 :x   (- player-x (/ width 2)) :y (- game-height height 50)})))
+                 :x   (- player-x (/ width 2)) :y y })))
     )
 
   (swap! *state (move/move-all game))
