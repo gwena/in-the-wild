@@ -48,6 +48,7 @@
    :camera              (e/->camera true)
    :target-color-weight 0
    :clouds              (generate-clouds)
+   :bonus               {}
    :rewards             []
    :killers             []})
 
