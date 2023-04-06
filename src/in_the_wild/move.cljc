@@ -127,7 +127,7 @@
           (let [{:keys [points name]} bonus]
             (-> interim-state
                 (update :score + points)
-                (update-in [:bonus name] inc)))
+                (update-in [:bonus name] (fnil inc 0))))
           interim-state))
       state)))
 
