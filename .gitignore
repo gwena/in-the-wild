@@ -6,6 +6,7 @@ resources/public/main.out/
 .clj-kondo/
 .lsp/
 .nrepl-port
+megalinter-reports
 
 # Simplify use of Tiled and Gimp
 *.xcf
