@@ -1,6 +1,6 @@
 # In the Wild
 
-One-level-only platform game in Clojure(Script) using play-cljc.
+Platform game in Clojure(Script) using play-cljc.
 
 ![Alt text](doc/in-the-wild-ninja.png?raw=true "Apprentice Ninja")
 
@@ -49,6 +49,8 @@ clj -M:prod uberjar
 ## Play
 
 [play online version](http://gwena.github.io/in-the-wild)
+
+![Alt text](doc/in-the-wild-screenshot.png?raw=true "Screenshot")
 
 ## Controls
 
