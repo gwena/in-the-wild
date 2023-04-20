@@ -1,5 +1,5 @@
 (ns in-the-wild.core-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer [deftest testing is]]
             [in-the-wild.core :as sut]
             [in-the-wild.start :as start]
             [play-cljc.gl.core :as pc]))
