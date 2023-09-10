@@ -17,7 +17,8 @@ Graphics by:
 * Unknown, used under a non-exclusive perpetual licence granted by GameDev Network Limited\
   (see https://static.gamedevmarket.net/terms-conditions/#pro-licence \
   for purchases made after the 15th January 2019)
-* Sungraphica - https://sungraphica.itch.io/tile-set-game-asset-free-version 
+* Sungraphica - https://sungraphica.itch.io/tile-set-game-asset-free-version
+* In the original version, the lovely graphics were by Mariana Polahiv
 
 ## Font
 
