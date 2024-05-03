@@ -1,6 +1,6 @@
 # In the Wild
 
-Platform game in Clojure(Script) using play-cljc.
+A Clojure(Script) Platform Game using play-cljc.
 
 ![Alt text](doc/in-the-wild-ninja.png?raw=true "Apprentice Ninja")
 
@@ -10,7 +10,7 @@ Help the apprentice Ninja, lost in the wild, collect the hoverboard power-packs 
 
 The game library used is [play-cljc](https://github.com/oakes/play-cljc), _A library for making games that run in both OpenGL and WebGL_, by Zach Oakes. For the other libraries used with play-cljc, check the section [Companion Libraries](https://github.com/oakes/play-cljc#companion-libraries).
 
-The repo [play-cljc-examples](https://github.com/oakes/play-cljc-examples) provided a good starting point, and some of the boilerplate code is still used.
+The [play-cljc-examples](https://github.com/oakes/play-cljc-examples) repository provided a good starting point, and some of the boilerplate code is still used.
 
 ## Build and Run
 
@@ -48,7 +48,7 @@ clj -M:prod uberjar
 
 ## Play
 
-[play online version](http://gwena.github.io/in-the-wild)
+[Play the online version](http://gwena.github.io/in-the-wild)
 
 ![Alt text](doc/in-the-wild-screenshot.png?raw=true "Screenshot")
 
