@@ -17,8 +17,8 @@
   #?(:cljs (:require-macros [in-the-wild.ext.text :refer [load-font-cljs]])))
 
 (defn generate-clouds []
-  (let [nb-clouds (helper/rand-range 22 30)]
-    (repeatedly nb-clouds
+  (let [num-clouds (helper/rand-range 22 30)]
+    (repeatedly num-clouds
                 #(hash-map
                   :type (rand-nth [:cloud-1 :cloud-2])
                   :size (+ 0.20 (rand 1))
@@ -27,7 +27,7 @@
                   :invert (rand-nth [-1 1])
                   :speed (/ (helper/rand-range 1 5) 10)))))
 
-(defn starting-state []
+(defn generate-initial-state []
   {:lifecycle           :start
    :score               0
    :start-time          (helper/now)
@@ -57,7 +57,7 @@
 (defonce *state (atom {}))
 
 (defn reset-state! []
-  (reset! *state (starting-state)))
+  (reset! *state (generate-initial-state)))
 
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
