@@ -137,7 +137,7 @@
           (for [char-num (range (count s))]
             [0 char-num (chars/crop-char font-entity (get s char-num))])))
 
-(defn tick [game]
+(defn render-all [game]
   (let [{:keys [tiled-map
                 tiled-map-entity
                 lifecycle
@@ -232,12 +232,11 @@
                     y                              (min (/ (+ game-height ninja-height 100) 2)
                                                         (- game-height height 20))]
                 {:img img
-                 :x   (- player-x (/ width 2)) :y y })))
-    )
+                 :x   (- player-x (/ width 2)) :y y })))))
 
+(defn tick [game]
+  (render-all game)
   (swap! *state (move/move-all game))
-
   (when (= (:lifecycle @*state) :restart)
     (init game))
-
   game)
