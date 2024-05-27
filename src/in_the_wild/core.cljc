@@ -85,27 +85,28 @@
   (gl game enable (gl game BLEND))
   (gl game blendFunc (gl game SRC_ALPHA) (gl game ONE_MINUS_SRC_ALPHA))
 
-  ;; Load Font
-  (#?(:clj load-font-clj :cljs load-font-cljs)
-   :blox-brk
-   (fn [{:keys [data]} baked-font]
-     (let [font-entity    (text/->font-entity game data baked-font)
-           dynamic-entity (c/compile game (i/->instanced-entity font-entity))]
-       (swap! *assets assoc
-              :font-entity font-entity
-              :dynamic-entity dynamic-entity))))
+  (when (empty? @*assets)
+    ;; Load Font
+    (#?(:clj load-font-clj :cljs load-font-cljs)
+     :blox-brk
+     (fn [{:keys [data]} baked-font]
+       (let [font-entity    (text/->font-entity game data baked-font)
+             dynamic-entity (c/compile game (i/->instanced-entity font-entity))]
+         (swap! *assets assoc
+                :font-entity font-entity
+                :dynamic-entity dynamic-entity))))
 
-  ;; Load Images
-  (doseq [[k filename] image-keys->filenames]
-    (utils/get-image (str "img/" filename)
-                     (fn [{:keys [data width height]}]
-                       (let [;; create an image entity (a map with info necessary to display it)
-                             entity (e/->image-entity game data width height)
-                             ;; compile the shaders so it is ready to render
-                             entity (c/compile game entity)
-                             ;; assoc the width and height to we can reference it later
-                             entity (assoc entity :width width :height height)]
-                         (swap! *assets update :images assoc k entity)))))
+    ;; Load Images
+    (doseq [[k filename] image-keys->filenames]
+      (utils/get-image (str "img/" filename)
+                       (fn [{:keys [data width height]}]
+                         (let [;; create an image entity (a map with info necessary to display it)
+                               entity (e/->image-entity game data width height)
+                               ;; compile the shaders so it is ready to render
+                               entity (c/compile game entity)
+                               ;; assoc the width and height to we can reference it later
+                               entity (assoc entity :width width :height height)]
+                           (swap! *assets update :images assoc k entity))))))
 
   (new-game game))
 
