@@ -2,26 +2,26 @@
  :deps    {org.clojure/clojure                        {:mvn/version "1.12.6"}
            tile-soup/tile-soup                        {:mvn/version "0.4.2"}
            play-cljc/play-cljc                        {:mvn/version "0.9.6"}
-           org.lwjgl/lwjgl                            {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-glfw                       {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-opengl                     {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-stb                        {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl$natives-linux              {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-glfw$natives-linux         {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-opengl$natives-linux       {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-stb$natives-linux          {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl$natives-macos              {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-glfw$natives-macos         {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-opengl$natives-macos       {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-stb$natives-macos          {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl$natives-macos-arm64        {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-glfw$natives-macos-arm64   {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-opengl$natives-macos-arm64 {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-stb$natives-macos-arm64    {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl$natives-windows            {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-glfw$natives-windows       {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-opengl$natives-windows     {:mvn/version "3.3.3"}
-           org.lwjgl/lwjgl-stb$natives-windows        {:mvn/version "3.3.3"}}
+           org.lwjgl/lwjgl                            {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-glfw                       {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-opengl                     {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-stb                        {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl$natives-linux              {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-glfw$natives-linux         {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-opengl$natives-linux       {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-stb$natives-linux          {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl$natives-macos              {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-glfw$natives-macos         {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-opengl$natives-macos       {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-stb$natives-macos          {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl$natives-macos-arm64        {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-glfw$natives-macos-arm64   {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-opengl$natives-macos-arm64 {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-stb$natives-macos-arm64    {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl$natives-windows            {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-glfw$natives-windows       {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-opengl$natives-windows     {:mvn/version "3.4.3"}
+           org.lwjgl/lwjgl-stb$natives-windows        {:mvn/version "3.4.3"}}
  :aliases {:dev   {:extra-deps {org.clojure/clojurescript {:mvn/version "1.12.145"}
                                 com.bhauman/figwheel-main {:mvn/version "0.2.20"}}
                    :main-opts  ["dev.clj"]}
