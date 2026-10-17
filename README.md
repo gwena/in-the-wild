@@ -48,7 +48,7 @@ clj -M:prod uberjar
 
 ## Play
 
-[Play the online version](http://gwena.github.io/in-the-wild)
+[Play the online version](https://ropert.net/in-the-wild/)
 
 ![Alt text](doc/in-the-wild-screenshot.png?raw=true "Screenshot")
 
