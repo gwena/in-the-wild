@@ -65,7 +65,7 @@ clj -M:prod uberjar
 
 In April 2019 at the Dutch Clojure Days in Amsterdam, I attended the interesting and entertaining talk _How I Supercharged Learning Clojure through Gamification_ by [@ladymeyy](https://twitter.com/ladymeyy). Thought it would be fun to write a little game in Clojure (with my limited experience at the time). Two weeks later, I was away for the Easter weekend and during my daughter's afternoon naps, I wrote this little game.
 
-The title, _in the wild_, is a reference to the sections of the same name in the enjoyable book from Russ Olsen _Getting Clojure_.
+The title, _in the wild_, is a reference to the sections of the same name in the great book [Getting Clojure](https://pragprog.com/titles/roclojure/getting-clojure/) from Russ Olsen.
 
 ## Graphics, Font
 
