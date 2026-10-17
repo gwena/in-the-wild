@@ -1,5 +1,5 @@
 {:paths   ["src" "resources"]
- :deps    {org.clojure/clojure                        {:mvn/version "1.11.3"}
+ :deps    {org.clojure/clojure                        {:mvn/version "1.12.6"}
            tile-soup/tile-soup                        {:mvn/version "0.4.2"}
            play-cljc/play-cljc                        {:mvn/version "0.9.6"}
            org.lwjgl/lwjgl                            {:mvn/version "3.3.3"}
@@ -22,13 +22,13 @@
            org.lwjgl/lwjgl-glfw$natives-windows       {:mvn/version "3.3.3"}
            org.lwjgl/lwjgl-opengl$natives-windows     {:mvn/version "3.3.3"}
            org.lwjgl/lwjgl-stb$natives-windows        {:mvn/version "3.3.3"}}
- :aliases {:dev   {:extra-deps {org.clojure/clojurescript {:mvn/version "1.11.132"}
-                                com.bhauman/figwheel-main {:mvn/version "0.2.18"}}
+ :aliases {:dev   {:extra-deps {org.clojure/clojurescript {:mvn/version "1.12.145"}
+                                com.bhauman/figwheel-main {:mvn/version "0.2.20"}}
                    :main-opts  ["dev.clj"]}
-           :prod  {:extra-deps {org.clojure/clojurescript {:mvn/version "1.11.132"}
-                                leiningen/leiningen       {:mvn/version "2.11.2"}}
+           :prod  {:extra-deps {org.clojure/clojurescript {:mvn/version "1.12.145"}
+                                leiningen/leiningen       {:mvn/version "2.13.0"}}
                    :main-opts  ["prod.clj"]}
            :macos {:jvm-opts ["-XstartOnFirstThread"]}
-           :test  {:extra-deps {lambdaisland/kaocha {:mvn/version "1.87.1366"}}
+           :test  {:extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
                    :exec-fn    kaocha.runner/exec-fn
                    :exec-args  {}}}}
