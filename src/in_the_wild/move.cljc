@@ -119,16 +119,15 @@
     (if tile
       (let [tile-id       (.indexOf (:tiles tiled-map) tile)
             image-id      (:image-id tile)
-            bonus         (get image-id->bonus image-id)
-            interim-state (-> state
-                              (assoc-in [:tiled-map :layers "bonus" x y] nil)
-                              (assoc :tiled-map-entity (i/dissoc tiled-map-entity tile-id)))]
+            bonus         (get image-id->bonus image-id)]
         (if bonus
           (let [{:keys [points name]} bonus]
-            (-> interim-state
+            (-> state
+                (assoc-in [:tiled-map :layers "bonus" x y] nil)
+                (assoc :tiled-map-entity (i/dissoc tiled-map-entity tile-id))
                 (update :score + points)
                 (update-in [:bonus name] (fnil inc 0))))
-          interim-state))
+          state))
       state)))
 
 (defn new-reward? [state]
