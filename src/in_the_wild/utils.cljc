@@ -44,9 +44,3 @@
              [w h])
      :cljs [(-> game :context .-canvas .-clientWidth)
             (-> game :context .-canvas .-clientHeight)]))
-
-(defn get-width [game]
-  (first (get-size game)))
-
-(defn get-height [game]
-  (second (get-size game)))
