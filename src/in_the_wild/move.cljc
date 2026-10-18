@@ -123,8 +123,13 @@
         (if bonus
           (let [{:keys [points name]} bonus]
             (-> state
-                (assoc-in [:tiled-map :layers "bonus" x y] nil)
-                (assoc :tiled-map-entity (i/dissoc tiled-map-entity tile-id))
+                (assoc :tiled-map-entity (i/dissoc tiled-map-entity tile-id)
+                       :tiled-map
+                       (-> tiled-map
+                           (update :tiles (fn [tiles]
+                                            (into (subvec tiles 0 tile-id)
+                                                  (subvec tiles (inc tile-id)))))
+                           (assoc-in [:layers "bonus" x y] nil)))
                 (update :score + points)
                 (update-in [:bonus name] (fnil inc 0))))
           state))
