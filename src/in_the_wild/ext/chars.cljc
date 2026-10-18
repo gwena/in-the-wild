@@ -43,21 +43,3 @@
          ;; adjust the next char if its horizontal position changed
          (cond-> (and next-char (not= (:x-total replaced-char) x-total))
                  (assoc-char line-num (inc index) next-char))))))
-
-(defn dissoc-char
-  ([text-entity index]
-   (dissoc-char text-entity 0 index))
-  ([{:keys [characters] :as text-entity} line-num index]
-   (let [line (nth characters line-num)
-         prev-lines (subvec characters 0 line-num)
-         prev-count (reduce + 0 (map count prev-lines))
-         v1 (subvec line 0 index)
-         v2 (subvec line (inc index))
-         line (into (into [] v1) v2)
-         next-char (get line index)]
-     (-> text-entity
-         (assoc-in [:characters line-num] line)
-         (i/dissoc (+ index prev-count))
-         (cond-> next-char
-                 (assoc-char line-num index next-char))))))
-
