@@ -68,7 +68,7 @@
        (< (abs (- pl-y object-y)) 1)))
 
 (defn move
-  [{:keys [delta-time] :as game}
+  [{:keys [delta-time]}
    {:keys [lifecycle player-x player-y can-jump? started? tiled-map] :as state}]
   (cond (= lifecycle :game-over)                   state
         (> player-y (+ 2 (:map-height tiled-map))) (assoc state :lifecycle :game-over)
@@ -82,7 +82,8 @@
               y-change   (-> (* y-velocity delta-time)
                              (max min-movement-per-frame)
                              (min max-movement-per-frame))]
-          (if (or (not= 0 x-change) (not= 0 y-change))
+          (if (and (zero? x-change) (zero? y-change))
+            state
             (assoc state
                    :x-velocity (decelerate x-velocity)
                    :y-velocity (decelerate y-velocity)
@@ -90,8 +91,7 @@
                    :y-change y-change
                    :player-x (+ player-x x-change)
                    :player-y (+ player-y y-change)
-                   :can-jump? (if (neg? y-velocity) false can-jump?))
-            state))))
+                   :can-jump? (if (neg? y-velocity) false can-jump?))))))
 
 (defn prevent-move
   [{:keys [player-x player-y player-width player-height x-change y-change tiled-map] :as state}]
