@@ -16,7 +16,7 @@
             #?(:clj [in-the-wild.ext.text :refer [load-font-clj]]))
   #?(:cljs (:require-macros [in-the-wild.ext.text :refer [load-font-cljs]])))
 
-(def debug? true)
+(def debug? false)
 
 (defn generate-clouds []
   (let [num-clouds (helper/rand-range 22 30)]
