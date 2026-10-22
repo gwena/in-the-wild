@@ -1,44 +1,10 @@
 (ns in-the-wild.start
   (:require [in-the-wild.core :as c]
             [play-cljc.gl.core :as pc])
-  (:import  [org.lwjgl.glfw GLFW Callbacks
-             GLFWCursorPosCallbackI GLFWKeyCallbackI GLFWMouseButtonCallbackI
-             GLFWCharCallbackI GLFWFramebufferSizeCallbackI GLFWWindowCloseCallbackI
-             GLFWScrollCallbackI]
-            [org.lwjgl.opengl GL GL33]
-            [org.lwjgl.system MemoryUtil])
+  (:import  [org.lwjgl.glfw GLFW Callbacks GLFWKeyCallbackI GLFW GLFWCharCallbackI
+             GLFWFramebufferSizeCallbackI GLFWWindowCloseCallbackI GLFWScrollCallbackI]
+            [org.lwjgl.opengl GL GL33])
   (:gen-class))
-
-(defn mousecode->keyword [mousecode]
-  (condp = mousecode
-    GLFW/GLFW_MOUSE_BUTTON_LEFT  :left
-    GLFW/GLFW_MOUSE_BUTTON_RIGHT :right
-    nil))
-
-(defn on-mouse-move! [window xpos ypos]
-  (let [*fb-width (MemoryUtil/memAllocInt 1)
-        *fb-height (MemoryUtil/memAllocInt 1)
-        *window-width (MemoryUtil/memAllocInt 1)
-        *window-height (MemoryUtil/memAllocInt 1)
-        _ (GLFW/glfwGetFramebufferSize window *fb-width *fb-height)
-        _ (GLFW/glfwGetWindowSize window *window-width *window-height)
-        fb-width (.get *fb-width)
-        fb-height (.get *fb-height)
-        window-width (.get *window-width)
-        window-height (.get *window-height)
-        width-ratio (/ fb-width window-width)
-        height-ratio (/ fb-height window-height)
-        x (* xpos width-ratio)
-        y (* ypos height-ratio)]
-    (MemoryUtil/memFree *fb-width)
-    (MemoryUtil/memFree *fb-height)
-    (MemoryUtil/memFree *window-width)
-    (MemoryUtil/memFree *window-height)
-    (swap! c/*state assoc :mouse-x x :mouse-y y)))
-
-(defn on-mouse-click! [window button action mods]
-  (swap! c/*state assoc :mouse-button (when (= action GLFW/GLFW_PRESS)
-                                        (mousecode->keyword button))))
 
 (def keycode-keyword-map
   ;; See issue with keycodes and localization, or different layouts, e.g. Colemak
@@ -67,8 +33,6 @@
 (defn on-scroll! [window xoffset yoffset])
 
 (defprotocol Events
-  (on-mouse-move [this xpos ypos])
-  (on-mouse-click [this button action mods])
   (on-key [this keycode scancode action mods])
   (on-char [this codepoint])
   (on-resize [this width height])
@@ -79,10 +43,6 @@
 
 (extend-type Window
   Events
-  (on-mouse-move [{:keys [handle]} xpos ypos]
-    (on-mouse-move! handle xpos ypos))
-  (on-mouse-click [{:keys [handle]} button action mods]
-    (on-mouse-click! handle button action mods))
   (on-key [{:keys [handle]} keycode scancode action mods]
     (on-key! handle keycode scancode action mods))
   (on-char [{:keys [handle]} codepoint]
@@ -96,14 +56,6 @@
 
 (defn listen-for-events [{:keys [handle] :as window}]
   (doto handle
-    (GLFW/glfwSetCursorPosCallback
-      (reify GLFWCursorPosCallbackI
-        (invoke [this _ xpos ypos]
-          (on-mouse-move window xpos ypos))))
-    (GLFW/glfwSetMouseButtonCallback
-      (reify GLFWMouseButtonCallbackI
-        (invoke [this _ button action mods]
-          (on-mouse-click window button action mods))))
     (GLFW/glfwSetKeyCallback
       (reify GLFWKeyCallbackI
         (invoke [this _ keycode scancode action mods]
@@ -165,4 +117,3 @@
 (defn -main [& args]
   (let [window (->window)]
     (start (pc/->game (:handle window)) window)))
-
