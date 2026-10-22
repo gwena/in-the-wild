@@ -75,14 +75,14 @@
                            :map-height map-height}
                           entity))))))
 
-(defn touching-tile [{:keys [layers] :as tiled-map} layer-name x y width height]
-  (let [layer (get layers layer-name)
-        start-x (int x)
-        start-y (int y)
-        end-x (int (+ x width))
-        end-y (int (+ y height))
-        near-tiles (for [tile-x (range start-x (inc end-x))
-                         tile-y (range start-y (inc end-y))]
-                     (get-in layer [tile-x tile-y]))]
-    (some->> near-tiles (remove nil?) first)))
-
+(defn touching-tile [{:keys [layers]} layer-name x y width height]
+  (when (> x -0.6)
+    (let [layer (get layers layer-name)
+          start-x (int x)
+          start-y (int y)
+          end-x (int (+ x width))
+          end-y (int (+ y height))
+          near-tiles (for [tile-x (range start-x (inc end-x))
+                           tile-y (range start-y (inc end-y))]
+                       (get-in layer [tile-x tile-y]))]
+      (some->> near-tiles (remove nil?) first))))
