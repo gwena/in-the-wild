@@ -2,9 +2,9 @@
   (:require [play-cljc.text :as text]))
 
 (def bitmap-size 512)
-(def bitmaps {:blox-brk (text/->bitmap bitmap-size bitmap-size)})
+(def bitmaps {:blok (text/->bitmap bitmap-size bitmap-size)})
 (def font-height 64)
-(def baked-fonts {:blox-brk (text/->baked-font "ttf/blox-brk.regular.ttf" font-height (:blox-brk bitmaps))})
+(def baked-fonts {:blok (text/->baked-font "ttf/bloktilt.ttf" font-height (:blok bitmaps))})
 
 (defn load-font-clj [font-key callback]
   (callback (font-key bitmaps) (font-key baked-fonts)))

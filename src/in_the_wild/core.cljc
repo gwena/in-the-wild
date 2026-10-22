@@ -88,7 +88,7 @@
   (when (empty? @*assets)
     ;; Load Font
     (#?(:clj load-font-clj :cljs load-font-cljs)
-     :blox-brk
+     :blok
      (fn [{:keys [data]} baked-font]
        (let [font-entity    (text/->font-entity game data baked-font)
              dynamic-entity (c/compile game (i/->instanced-entity font-entity))]
@@ -214,7 +214,7 @@
       (let [score (str (:score state))]
         (c/render game (-> (text->img @*assets score )
                            (t/project game-width game-height)
-                           (t/translate 10 60)))))
+                           (t/translate 30 70)))))
 
     ;; If game-over, render the keys to play, and initially game-over, then the full size ninja
     (when (= lifecycle :game-over)

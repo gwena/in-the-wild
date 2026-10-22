@@ -1,7 +1,7 @@
 # License
 
 MIT License - 2023, Gwena\
-except if otherwise specified below. _So complicated for such a simple game._ 
+except if otherwise specified below. _So complicated for such a simple game._
 
 https://opensource.org/license/mit/
 
@@ -22,4 +22,4 @@ Graphics by:
 
 ## Font
 
-Blox Brk Font by Brian Kent - Freeware 
+Block Tilt Font by Brian Kent - Freeware
