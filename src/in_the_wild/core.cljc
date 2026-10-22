@@ -218,13 +218,12 @@
                            (t/translate 30 70)))))
 
     (when (:debug? state)
-      (let [format (fn format-decimal [n]
-                     #?(:clj  (format "%.2f" (double n))
-                        :cljs (.toFixed n 2)))
-            info (str (format player-x) "  " (format player-y))]
-        (c/render game (-> (text->img @*assets info)
-                           (t/project game-width game-height)
-                           (t/translate 30 140)))))
+      #?(:clj (let [fmt (fn [n] (format "%.2f" (double n)))
+                    info (str (fmt player-x) ", " (fmt player-y))]
+                (c/render game (-> (text->img @*assets info)
+                                   (t/project game-width game-height)
+                                   (t/translate 30 140))))
+         :cljs nil))
 
     ;; If game-over, render the keys to play, and initially game-over, then the full size ninja
     (when (= lifecycle :game-over)
