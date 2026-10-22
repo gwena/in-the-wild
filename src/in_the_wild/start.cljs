@@ -15,15 +15,6 @@
                             :delta-time (- ts (:total-time game))
                             :total-time ts)))))))
 
-(defn listen-for-mouse [canvas]
-  (events/listen js/window "mousemove"
-                 (fn [event]
-                   (swap! c/*state
-                          (fn [state]
-                            (let [bounds (.getBoundingClientRect canvas)
-                                  x      (- (.-clientX event) (.-left bounds))
-                                  y      (- (.-clientY event) (.-top bounds))]
-                              (assoc state :mouse-x x :mouse-y y)))))))
 (def keycode-keyword-map
   ;; Always align with the similar map in start.clj
   {37 :left
@@ -65,7 +56,6 @@
                             :delta-time 0
                             :total-time (msec->sec (js/performance.now)))]
     (c/init initial-game)
-    (listen-for-mouse canvas)
     (listen-for-keys)
     (resize context)
     (listen-for-resize context)
