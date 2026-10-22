@@ -16,8 +16,6 @@
             #?(:clj [in-the-wild.ext.text :refer [load-font-clj]]))
   #?(:cljs (:require-macros [in-the-wild.ext.text :refer [load-font-cljs]])))
 
-(def debug? false)
-
 (defn generate-clouds []
   (let [num-clouds (helper/rand-range 22 30)]
     (repeatedly num-clouds
@@ -52,7 +50,8 @@
    :clouds              (generate-clouds)
    :bonus               {}
    :rewards             []
-   :killers             []})
+   :killers             []
+   :debug?              false})
 
 (defonce *assets (atom {}))
 
@@ -218,7 +217,7 @@
                            (t/project game-width game-height)
                            (t/translate 30 70)))))
 
-    (when debug?
+    (when (:debug? state)
       (let [format (fn format-decimal [n]
                      #?(:clj  (format "%.2f" (double n))
                         :cljs (.toFixed n 2)))
