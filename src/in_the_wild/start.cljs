@@ -21,7 +21,8 @@
    39 :right
    38 :up
    32 :space
-   81 :q})
+   81 :q
+   90 :debug})
 
 (defn keycode->keyword [keycode]
   (get keycode-keyword-map keycode))

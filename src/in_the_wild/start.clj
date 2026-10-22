@@ -14,7 +14,8 @@
    GLFW/GLFW_KEY_RIGHT :right
    GLFW/GLFW_KEY_UP    :up
    GLFW/GLFW_KEY_SPACE :space
-   GLFW/GLFW_KEY_Q     :q})
+   GLFW/GLFW_KEY_Q     :q
+   GLFW/GLFW_KEY_Z     :debug})
 
 (defn keycode->keyword [keycode]
   (get keycode-keyword-map keycode))

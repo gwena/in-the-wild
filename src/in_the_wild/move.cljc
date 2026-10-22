@@ -42,6 +42,12 @@
              (not (and (not-empty pressed-keys) (not space?)))
              space?))))
 
+(defn check-debug
+  [{:keys [pressed-keys debug?] :as state}]
+  (if (and debug? (contains? pressed-keys :debug))
+    (assoc state :player-x 267)
+    state))
+
 (defn get-x-velocity
   [{:keys [pressed-keys x-velocity]}]
   (cond
@@ -229,6 +235,7 @@
         state
         (->> state
              (move game)
+             (check-debug)
              (prevent-move)
              (drop-rewards)
              (drop-killers)
