@@ -16,6 +16,8 @@
             #?(:clj [in-the-wild.ext.text :refer [load-font-clj]]))
   #?(:cljs (:require-macros [in-the-wild.ext.text :refer [load-font-cljs]])))
 
+(def debug? true)
+
 (defn generate-clouds []
   (let [num-clouds (helper/rand-range 22 30)]
     (repeatedly num-clouds
@@ -215,6 +217,15 @@
         (c/render game (-> (text->img @*assets score )
                            (t/project game-width game-height)
                            (t/translate 30 70)))))
+
+    (when debug?
+      (let [format (fn format-decimal [n]
+                     #?(:clj  (format "%.2f" (double n))
+                        :cljs (.toFixed n 2)))
+            info (str (format player-x) "  " (format player-y))]
+        (c/render game (-> (text->img @*assets info)
+                           (t/project game-width game-height)
+                           (t/translate 30 140)))))
 
     ;; If game-over, render the keys to play, and initially game-over, then the full size ninja
     (when (= lifecycle :game-over)
