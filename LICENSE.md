@@ -8,12 +8,14 @@ https://opensource.org/license/mit/
 ## Code
 
 Some code portions reused from the public domain\
-(see https://github.com/oakes/play-cljc-examples#licensing)
+(see https://github.com/oakes/play-cljc-examples#licensing).
+
+No AI/LLM was used to generate code.
 
 ## Graphics
 
 Graphics by:
-* Gwena, Gwena + DALL-E 2
+* Gwena, Gwena + DALL-E 2 (circa 2023) / ChatGPT (2026)
 * Unknown, used under a non-exclusive perpetual licence granted by GameDev Network Limited\
   (see https://static.gamedevmarket.net/terms-conditions/#pro-licence \
   for purchases made after the 15th January 2019)
