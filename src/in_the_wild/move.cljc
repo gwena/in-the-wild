@@ -14,7 +14,7 @@
 (def min-movement-per-frame -0.9)
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
-(def sushis {:sushi-california-roll 3000 :sushi-shrimp-nigiri 5000})
+(def sushis {:sushi-california-roll 3000 :sushi-shrimp-nigiri 5000 :sushi-tuna-nigiri 6500})
 
 (defn duration [state]
   (quot (- (helper/now) (:start-time state)) 1000))
