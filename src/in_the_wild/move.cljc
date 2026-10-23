@@ -159,7 +159,7 @@
              (filter #(and (pos? (:y %))
                            (< (:y %) (:map-height tiled-map))))
              (map #(if (and (not game-over?) (touch? px py (:x %) (:y %)) (contains? sushis (:type %)))
-                     (assoc % :velocity-y (- (:velocity-y %)) :type :released-energy :points (sushis (:type %)))
+                     (assoc % :velocity-y (- (:velocity-y %)) :type :reward-poof :points (sushis (:type %)))
                      %)))
         points          (if game-over? 0 (reduce + (keep :points score-rewards)))
         updated-rewards (map #(dissoc % :points) score-rewards)]

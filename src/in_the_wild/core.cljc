@@ -63,7 +63,7 @@
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
 (def image-keys->filenames
-  (->> [:title :ninja-title :keys :game-over :cloud-1 :cloud-2 :released-energy]
+  (->> [:title :ninja-title :keys :game-over :cloud-1 :cloud-2 :reward-poof]
        (concat move/ninja-modes)
        (concat (keys move/sushis))
        (map #(vector % nil))
