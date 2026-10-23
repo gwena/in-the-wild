@@ -14,6 +14,7 @@
 (def min-movement-per-frame -0.9)
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
+(def sushis {:sushi-california-roll 3000 :sushi-shrimp-nigiri 5000})
 
 (defn duration [state]
   (quot (- (helper/now) (:start-time state)) 1000))
@@ -144,6 +145,9 @@
 (defn new-reward? [state]
   (and (> (duration state) 2) (> (rand 1000) 960)))
 
+(defn rand-sushi []
+ (rand-nth (keys sushis)))
+
 (defn drop-rewards
   [{:keys [lifecycle rewards tiled-map player-x player-y] :as state}]
   (let [px              (int player-x)
@@ -154,19 +158,20 @@
              (map #(update % :y + (:velocity-y %)))
              (filter #(and (pos? (:y %))
                            (< (:y %) (:map-height tiled-map))))
-             (map #(if (and (not game-over?) (touch? px py (:x %) (:y %)) (= :energy (:type %)))
-                     (assoc % :velocity-y (- (:velocity-y %)) :type :released-energy :points true)
+             (map #(if (and (not game-over?) (touch? px py (:x %) (:y %)) (contains? sushis (:type %)))
+                     (assoc % :velocity-y (- (:velocity-y %)) :type :released-energy :points (sushis (:type %)))
                      %)))
-        points          (if game-over? 0 (* 500 (count (filter :points score-rewards))))
+        points          (if game-over? 0 (reduce + (keep :points score-rewards)))
         updated-rewards (map #(dissoc % :points) score-rewards)]
     (assoc state
            :score (+ (:score state) points)
            :rewards (if (new-reward? state)
-                      (conj updated-rewards {:type       :energy
+                      (conj updated-rewards {:type       (rand-sushi)
                                              :x          (helper/rand-span player-x 15)
                                              :y          0
                                              :velocity-y (/ (helper/rand-range 1 4) 10)})
                       updated-rewards))))
+
 (defn new-killer? [state]
   (let [time                 (duration state)
         no-killer-sec        5

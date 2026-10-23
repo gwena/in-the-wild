@@ -63,8 +63,9 @@
 (def tiled-map (edn/read-string (read-tiled-map "level/level-1.tmx")))
 
 (def image-keys->filenames
-  (->> [:title :ninja-title :keys :game-over :cloud-1 :cloud-2 :energy :released-energy]
+  (->> [:title :ninja-title :keys :game-over :cloud-1 :cloud-2 :released-energy]
        (concat move/ninja-modes)
+       (concat (keys move/sushis))
        (map #(vector % nil))
        (concat [[:weapon {:file "five-blades-star" :size 3}]])
        (mapcat (fn [[k v]] (if (map? v)
