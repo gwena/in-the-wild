@@ -2,7 +2,7 @@
 
 A Clojure(Script) Platform Game using play-cljc.
 
-![Alt text](doc/in-the-wild-ninja.png?raw=true "Apprentice Ninja")
+<p align="center"><img src="doc/in-the-wild-ninja.png" alt="Ninja" title="Apprentice Ninja"></p>
 
 Help the apprentice Ninja :ninja: collect from his hoverboard sushis :sushi: while avoiding the falling weapons.
 
