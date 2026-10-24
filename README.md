@@ -4,7 +4,7 @@ A Clojure(Script) Platform Game using play-cljc.
 
 ![Alt text](doc/in-the-wild-ninja.png?raw=true "Apprentice Ninja")
 
-Help the apprentice Ninja, lost in the wild, collect the hoverboard power-packs and avoid the falling weapons.
+Help the apprentice Ninja :ninja: collect from his hoverboard sushis :sushi: while avoiding the falling weapons.
 
 ## Game Libraries
 
@@ -63,7 +63,7 @@ clj -M:prod uberjar
 
 ## Origins
 
-In April 2019 at the Dutch Clojure Days in Amsterdam, I attended the interesting and entertaining talk _How I Supercharged Learning Clojure through Gamification_ by [@ladymeyy](https://twitter.com/ladymeyy). Thought it would be fun to write a little game in Clojure (with my limited experience at the time). Two weeks later, I was away for the Easter weekend and during my daughter's afternoon naps, I wrote this little game.
+In April 2019 at the Dutch Clojure Days in Amsterdam, I attended the interesting and entertaining talk _How I Supercharged Learning Clojure through Gamification_ by [@ladymeyy](https://twitter.com/ladymeyy). I thought it would be fun to write a little game in Clojure (with my limited experience at the time). Two weeks later, I was away for the Easter weekend and during my daughter's afternoon naps, I wrote the initial version of this little platform game.
 
 The title, _in the wild_, is a reference to the sections of the same name in the great book [Getting Clojure](https://pragprog.com/titles/roclojure/getting-clojure/) from Russ Olsen.
 
