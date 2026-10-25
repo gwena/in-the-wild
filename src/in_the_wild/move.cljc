@@ -14,7 +14,10 @@
 (def min-movement-per-frame -0.9)
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
-(def sushis {:sushi-california-roll 3000 :sushi-shrimp-nigiri 5000 :sushi-tuna-nigiri 6500 :sushi-salmon-nigiri 15000})
+(def sushis {:sushi-california-roll {:points 3000}
+             :sushi-shrimp-nigiri   {:points 5000}
+             :sushi-tuna-nigiri     {:points 6500}
+             :sushi-salmon-nigiri   {:points 15000}})
 
 (defn duration [state]
   (quot (- (helper/now) (:start-time state)) 1000))
@@ -159,7 +162,7 @@
              (filter #(and (pos? (:y %))
                            (< (:y %) (:map-height tiled-map))))
              (map #(if (and (not game-over?) (touch? px py (:x %) (:y %)) (contains? sushis (:type %)))
-                     (assoc % :velocity-y (- (:velocity-y %)) :type :reward-poof :points (sushis (:type %)))
+                     (assoc % :velocity-y (- (:velocity-y %)) :type :reward-poof :points (get-in sushis [(:type %) :points] ))
                      %)))
         points          (if game-over? 0 (reduce + (keep :points score-rewards)))
         updated-rewards (map #(dissoc % :points) score-rewards)]
