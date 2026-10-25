@@ -145,11 +145,12 @@
           state))
       state)))
 
-(defn new-reward? [state]
-  (and (> (duration state) 2) (> (rand 1000) 960)))
-
-(defn rand-sushi []
- (rand-nth (keys sushis)))
+(defn new-sushi [state]
+  (when (and (> (duration state) 2) (> (rand 1000) 960))
+    {:type       (rand-nth (keys sushis))
+     :x          (helper/rand-span (:player-x state) 15)
+     :y          0
+     :velocity-y (/ (helper/rand-range 1 4) 10)}))
 
 (defn drop-rewards
   [{:keys [lifecycle rewards tiled-map player-x player-y] :as state}]
@@ -168,11 +169,8 @@
         updated-rewards (map #(dissoc % :points) score-rewards)]
     (assoc state
            :score (+ (:score state) points)
-           :rewards (if (new-reward? state)
-                      (conj updated-rewards {:type       (rand-sushi)
-                                             :x          (helper/rand-span player-x 15)
-                                             :y          0
-                                             :velocity-y (/ (helper/rand-range 1 4) 10)})
+           :rewards (if-let [sushi (new-sushi state)]
+                      (conj updated-rewards sushi)
                       updated-rewards))))
 
 (defn new-killer? [state]
