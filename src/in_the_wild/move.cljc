@@ -14,10 +14,10 @@
 (def min-movement-per-frame -0.9)
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
-(def sushis {:sushi-california-roll {:points 3000}
-             :sushi-shrimp-nigiri   {:points 5000}
-             :sushi-tuna-nigiri     {:points 6500}
-             :sushi-salmon-nigiri   {:points 15000}})
+(def sushis {:sushi-california-roll {:rarity 0.9 :points 3000}
+             :sushi-shrimp-nigiri   {:rarity 0.7 :points 5000}
+             :sushi-tuna-nigiri     {:rarity 0.8 :points 6500}
+             :sushi-salmon-nigiri   {:rarity 0.15 :points 15000}})
 
 (defn duration [state]
   (quot (- (helper/now) (:start-time state)) 1000))
@@ -146,11 +146,13 @@
       state)))
 
 (defn new-sushi [state]
-  (when (and (> (duration state) 2) (> (rand 1000) 960))
-    {:type       (rand-nth (keys sushis))
-     :x          (helper/rand-span (:player-x state) 15)
-     :y          0
-     :velocity-y (/ (helper/rand-range 1 4) 10)}))
+  (let [sushi            (rand-nth (keys sushis))
+        {:keys [rarity]} (sushi sushis)]
+    (when (and (> (duration state) 2) (> (rand 1000) 960) (< (rand 1) rarity) )
+      {:type       sushi
+       :x          (helper/rand-span (:player-x state) 15)
+       :y          0
+       :velocity-y (/ (helper/rand-range 1 4) 10)})))
 
 (defn drop-rewards
   [{:keys [lifecycle rewards tiled-map player-x player-y] :as state}]
