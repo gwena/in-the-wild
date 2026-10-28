@@ -15,6 +15,7 @@
 
 (def ninja-modes [:ninja-no-booster :ninja-left-booster :ninja-both-booster :ninja-right-booster])
 (def sushis {:sushi-california-roll {:rarity 0.9 :points 3000}
+             :sushi-futomaki        {:rarity 0.9 :points 1000}
              :sushi-shrimp-nigiri   {:rarity 0.7 :points 5000}
              :sushi-tuna-nigiri     {:rarity 0.8 :points 6500}
              :sushi-salmon-nigiri   {:rarity 0.15 :points 15000}})
